@@ -1,4 +1,4 @@
-# Megar
+# Megar {<img src="https://secure.travis-ci.org/tardate/megar.png" />}[http://travis-ci.org/tardate/megar]
 
 TODO: Write a gem description
 

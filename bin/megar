@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+
+require 'megar'
+require 'getoptions'
+
+begin
+  options = GetOptions.new(Megar::Shell::OPTIONS)
+  Megar::Shell.new(options,ARGV).run
+rescue Interrupt,NoMethodError
+  $stderr.puts ""
+rescue Exception => e
+  $stderr.puts "That wasn't meant to happen! #{e.message}"
+  Megar::Shell.usage
+end
+
