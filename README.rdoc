@@ -1,0 +1,132 @@
+= Megar {<img src="https://secure.travis-ci.org/tardate/megar.png" />}[http://travis-ci.org/tardate/megar]
+
+Megar is a Ruby wrapper and command-line client for the {Mega API}[https://mega.co.nz/#developers].
+
+NOTE: the gem has not been released yet, pending the implementation of a few more API functions (so it's at least halfway useful!)
+
+== Requirements and Known Limitations
+
+Consider this way alpha at this point, especially since the Mega API has yet to be formally and fully documented.
+Also no promises that it's speedy, or not subject to edge-case flaws in the crypto handling.
+
+* Tested with MRI 1.9.2, 1.9.3
+
+Mega API coverage is far from complete at this point (help appreciated!). Here's the run-down:
+
+Supported API functions:
+* User/session management: Complete accounts
+* Login session challenge/response
+
+Currently unsupported API functions:
+* User/session management: Ephemeral accounts
+* User/session management: Confirming accounts
+* Retrieve folder or user nodes
+* Add/copy nodes
+* Delete node
+* Move node
+* Set node attributes
+* Create/delete public handle
+* Create/modify/delete outgoing share
+* Key handling - Set or request share/node keys
+* Request download URL
+* Request upload URL
+* Add/update user
+* Get user
+* Retrieve user's public key
+* Add/update/delete contact
+* Invite user
+* Send confirmation e-mail
+* Obtain user details by invitation code
+* Verify e-mailed confirmation code
+* List user sessions
+* User quota details
+* ... and all other API features not explicitly listed above
+
+
+== The Megar Cookbook
+
+=== How do I install it for normal use?
+
+Add this line to your application's Gemfile:
+
+    gem 'megar'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install megar
+
+
+=== How to start an authenticated session
+
+The Megar::Session object is the main entry point for the library.
+All requests on the Mega API are made in the context of an established session.
+
+    # create a session with immediate authentication
+    session = Megar::Session.new(email: 'my@email.com', password: 'my_password')
+
+It's possible to delay the authentication
+
+    # create a session with deferred authentication
+    session = Megar::Session.new(email: 'my@email.com', password: 'my_password', autoconnect: false )
+    # then explicitly login:
+    session.connect!
+
+
+=== How to use the command-line client
+
+The gem installation includes a command-line tool. Call it without parameters and it will show help:
+
+    $ megar
+
+All operations require credentials to ba passed on the command line (email and password arguments):
+
+    $ megar --email=my@email.com --password=mypassword
+    Connecting to mega as my@email.com..
+    Connected!
+
+
+=== How to run tests
+
+Test are implemented using rspec. Run tests with <tt>rake</tt> or <tt>rake spec</tt>.
+
+
+=== How to refresh unit test expectations
+
+Unit tests make liberal use of expected responses from the actual Mega API.
+In order to enable good unit tests without hitting the Mega API for real,
+test expectations are stored as JSON under 'spec/fixtures/crypto_expectations'.
+
+A rake task is available to re-generate the expectations:
+
+    $ rake gen:crypto_expectations email=my@email.com password=mypassword
+
+    Generating crypto_expectations for my@email.com...
+
+    Done! New crypto_expectations for unit test written to:
+    /.../megar/spec/fixtures/crypto_expectations/sample_user.json
+
+
+== References
+
+* {Mega API is documentation}[https://mega.co.nz/#developers]
+* {Using the Mega API, with Python examples}[http://julien-marchand.fr/blog/using-mega-api-with-python-examples/]
+* {SpiderOak's Analysis and Recommendations for the Crypto in Kim Dotcom's Mega}[https://spideroak.com/blog/20130123130638-spideroaks-analysis-and-recommendations-for-the-crypto-in-kim-dotcoms-mega-part-one]
+
+
+== Contributing
+
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Fork the project
+* Start a feature/bugfix branch
+* Commit and push until you are happy with your contribution
+* Make sure to add tests for it. This is important so it doesn't get broken in a future version unintentionally.
+* Please try not to mess with the gemspec, Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so it can be cherry-picked around.
+
+== Copyright
+
+Copyright (c) 2013 Paul Gallagher. See LICENSE for further details.

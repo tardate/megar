@@ -7,8 +7,8 @@ require 'getoptions'
 begin
   options = GetOptions.new(Megar::Shell::OPTIONS)
   Megar::Shell.new(options,ARGV).run
-rescue Interrupt,NoMethodError
-  $stderr.puts ""
+rescue Interrupt
+  $stderr.puts "..interrupted."
 rescue Exception => e
   $stderr.puts "That wasn't meant to happen! #{e.message}"
   Megar::Shell.usage

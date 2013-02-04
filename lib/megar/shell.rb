@@ -13,19 +13,22 @@ class Megar::Shell
   # +args+ is the remaining command line arguments
   #
   def initialize(options,args)
-    defaults = {
-      :interval => 1
-    }
-    @options = defaults.merge( (options||{}).each{|k,v| {k => v} } )
+    @options = (options||{}).each{|k,v| {k => v} }
   end
 
-  # runs the octopump task
+  # runs the megar task
   def run
-    usage
+    if email && password
+      $stderr.puts "Connecting to mega as #{email}.."
+      raise "Failed to connect!" unless session.connected?
+      $stderr.puts "Connected!"
+    else
+      usage
+    end
   end
 
   # defines the valid command line options
-  OPTIONS = %w(help verbose)
+  OPTIONS = %w(help verbose email=s password=s)
 
   class << self
 
@@ -37,11 +40,13 @@ Megar v#{Megar::VERSION}
 ===================================
 
 Usage:
-  octopump [options] uri
+  megar [options]
 
 Options:
-  -h  | --help    : shows command help
-  -v  | --verbose : run with verbose
+  -h  | --help           : shows command help
+  -v  | --verbose        : run with verbose
+  -e= | --email=value    : email address for login
+  -p= | --password=value : password for login
 
 Examples:
 
@@ -53,5 +58,13 @@ EOS
   def usage
     self.class.usage
   end
+
+  def session
+    @session ||= Megar::Session.new(email: email, password: password)
+  end
+
+  # Option shortcuts
+  def email    ; options[:email]    ; end
+  def password ; options[:password] ; end
 
 end

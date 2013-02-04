@@ -22,3 +22,12 @@ desc "Open an irb session preloaded with this library"
 task :console do
   sh "irb -rubygems -I lib -r megar.rb"
 end
+
+namespace :gen do
+  desc "Generate new unit test expectations given email=your_email password=your_password"
+  task :crypto_expectations do
+    require './spec/spec_helper.rb'
+    include CryptoExpectationsHelper
+    generate_crypto_expectations(ENV['email'], ENV['password'])
+  end
+end
