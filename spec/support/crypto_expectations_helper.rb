@@ -27,10 +27,11 @@ module CryptoExpectationsHelper
       e[:sid] = session.sid
       e[:rsa_private_key_b64] = session.rsa_private_key_b64
       e[:decomposed_rsa_private_key] = session.decomposed_rsa_private_key
+      e[:files_response_data] = session.send(:get_files_response)
     end
     efn = crypto_expectations_sample_path('sample_user')
     ef = File.open(efn,'w')
-    ef.write e.to_json
+    ef.write JSON.pretty_generate(e)
     ef.close
     STDERR.puts "\nDone! New crypto_expectations for unit test written to:\n#{efn}\n\n"
   end

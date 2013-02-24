@@ -22,7 +22,7 @@ class Megar::Session
   #
   def initialize(options={})
     default_options = { autoconnect: true }
-    @options = default_options.merge(options).inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+    @options = default_options.merge(options.symbolize_keys)
     self.api_endpoint = @options[:api_endpoint] if @options[:api_endpoint]
     connect! if @options[:autoconnect]
   end
@@ -32,13 +32,21 @@ class Megar::Session
     !sid.nil?
   end
 
+  # Returns a pretty representation of the session object
+  def to_s
+    if connected?
+      "#{self.class.name}: connected as #{email}"
+    else
+      "#{self.class.name}: not connected"
+    end
+  end
+
   # Command: perform login session challenge/response.
   # Establishes a user session based on the response to a cryptographic challenge.
   #
   def connect!
     handle_login_challenge_response(get_login_response)
   end
-
 
   # Returns the user email (convenience method)
   def email
@@ -55,13 +63,39 @@ class Megar::Session
     base64urlencode(rsa_private_key)
   end
 
+  # Returns the folder collection
+  def folders
+    refresh_files! if @folders.nil?
+    @folders
+  end
+
+  # Returns the files collection
+  def files
+    refresh_files! if @files.nil?
+    @files
+  end
+
+  def refresh_files!
+    handle_files_response(get_files_response)
+  end
+
+  def reset_files!
+    @folders = Megar::Folders.new
+    @files = Megar::Files.new
+  end
+
   protected
+
+  # Command: enforces guard condition requiring authenticated connection to proceed
+  def ensure_connected!
+    raise "Not connected" unless connected?
+  end
 
   def get_login_response
     api_request({'a' => 'us', 'user' => email, 'uh' => uh})
   end
 
-  # Command: decrypt the +response_data+ received from Mega
+  # Command: decrypt/decode the login +response_data+ received from Mega
   #
   # Javascript reference implementation: function api_getsid2(res,ctx)
   #
@@ -78,6 +112,34 @@ class Megar::Session
       end
     end
   end
+
+  def get_files_response
+    ensure_connected!
+    api_request({'a' => 'f', 'c' => 1})
+  end
+
+  # Command: decrypt/decode the login +response_data+ received from Mega
+  #
+  def handle_files_response(response_data)
+    reset_files!
+    response_data['f'].each do |f|
+      item_attributes = {id: f['h'], payload: f.dup, type: f['t'] }
+      case f['t']
+      when 0 # File
+        item_attributes[:key] = k = decrypt_file_key(f)
+        item_attributes[:attributes] = decrypt_file_attributes(f,k)
+        files.add(item_attributes)
+      when 1 # Folder
+        item_attributes[:key] = k = decrypt_file_key(f)
+        item_attributes[:attributes] = decrypt_file_attributes(f,k)
+        folders.add(item_attributes)
+      when 2,3,4 # Root, Inbox, Trash Bin
+        folders.add(item_attributes)
+      end
+    end
+    true
+  end
+
   # Returns the encoded user password key
   def password_key
     prepare_key_pw(password)

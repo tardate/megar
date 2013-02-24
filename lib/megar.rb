@@ -1,8 +1,11 @@
-require "extensions/math"
+require 'active_support/inflector'
+require 'active_support/hash_with_indifferent_access'
+require 'extensions/math'
 
-require "megar/version"
-require "megar/exception"
-require "megar/shell"
-require "megar/crypto"
-require "megar/connection"
-require "megar/session"
+require 'megar/version'
+require 'megar/exception'
+require 'megar/shell'
+require 'megar/crypto'
+require 'megar/connection'
+require 'megar/session'
+require 'megar/catalog'

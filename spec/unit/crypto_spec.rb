@@ -399,7 +399,6 @@ describe Megar::Crypto do
 
   end
 
-
   describe "#rsa_decrypt" do
     # expectation generation in Javascript:
     #
@@ -452,70 +451,26 @@ describe Megar::Crypto do
 
   end
 
-  # describe "#rsa_decrypt" do
-  #   # expectation generation in Javascript:
-  #   #
-  #   # master_key = [1049027610,743989201,1864038849,230624922]
-  #   # privk = "3SKcQouWFdemgOQWwn_UUcCnHRNUZA0I5og99p_rYe6p2z16CY_qsbjOA5T59g3ClK6afQ9T0-lic79vtPsmRFWd7CY8EbXqZgX8gY8ZmiH0GZpCR57eOoIafpVzXU-OXrcGeJ_fOHQHDj7uEtF6lNaBdLPhdRkhYVno0DmdTcVfE939ESBmsBw_hCNUaicAmYSG1n_fdsiPs0UIOY0m2pjS1TZ-UfUZiLIxJnIujmteEKEWrOIMLnHXVR-V7S_2kZEzgOiRnrDvUIvcItP1xJ3dEvqIFPTTqVDHfEua4wnZPhPwiFg5awLudKigL2MS7kpmg9IuLTeCKytNpcOS9s24FCdIJCtsGqTXccY73Vj8rnRnjjd0iRV83XGpSPvwOa6-IPhhphGWgMNr4atlQzYHq4z3NBMMj9l8LnSOWO6KbUpTuqeQniO_YSQ_TbzjC-3cAEBjB7MpjSuBLexv3JygnpYiWmOJnUoojH3pezGNoNePtshsEllelcMa1_1c1cuJ2stH59HcTgB0u6-cpYqupeHqZB9Bn6U-eVjV1Ut-8LkzkTZjuGmt4YZZdJ-nZrkgsDkcpEFKfmupYDv8_9y69zOQaFXQ8v90KB2DawNWSEDRbAx-EFfu3rIsA3Hz2a9w-wVQQ8PD0C94kn57y4iyYbZDCu9Pal8V27J8eyUCqMh1kYlBkinuat3a2zKjT6bL6Tds6TkLUuzefO6DoPUQGTBZK8ZYi7QotUGI8xYzg6T26vDFQcgaQngSD0ZhZaKeQXdvRI_qjEZqg5Rt1VYZlJF42cinJD0N5blYewxy44Ps5oIAkR8iGjAgVL3KI_LsThWaCEKxTM0ScVGdYoh0vuSdIpAKVQVX_qfC8D0"
-  #   # key = base64_to_a32(privk)
-  #   # aes = new sjcl.cipher.aes(master_key)
-  #   # rsa_private_key = decrypt_key(aes,key)
-  #   # //::= decrypt_base64_to_str
-  #   #
-  #   # privk = a32_to_str(rsa_private_key)
-  #   # rsa_privk = Array(4)
-  #   # // decompose private key
-  #   # for (var i = 0; i < 4; i++) {
-  #   #   l = ((privk.charCodeAt(0)*256+privk.charCodeAt(1)+7)>>3)+2 // 130
-  #   #   privk_part = privk.substr(0,l)
-  #   #     data = base64urlencode(privk_part)
-  #   #   rsa_privk[i] = mpi2b(privk_part)
-  #   #   if (typeof rsa_privk[i] == 'number') break;
-  #   #   privk = privk.substr(l)
-  #   # }
-  #   # //::= decompose_rsa_private_key
-  #   #
-  #   # csid = "CABTMUpwxe-OSvX_AhWxDzNu-fvisC9oRNxV97EjmBDLmLvyrEkdWRy4jAxQBOEFiqTe8bvH5EJ_HIxg_reA83kFB8UkHp359CPIceDwrTfS1pm3_onh7rWOdanzTXdixqiDRWIPo5dEfsIJixMIXtlBONla8TlTpc6sQ5NsysqMNYBaHD-5Npqj01s-pjkfSVwrtGSVU_b0JlT8acBemb8cukeXYSXaVf6ILgnBGkFYNyzSN5wmDDOU8tySoyKTtaPV9QDym0CrrxeNCYZPeawQQ4C85_dmJTJwSDyUu3ApocY2LPMYvRzo2CEP80eLuLHTSSp8O9_LMi7MrSJxCM9m"
-  #   # t = mpi2b(base64urldecode(csid))
-  #   # // length: 74, first: 17354598, last: 5
-  #   # //::= base64_mpi_to_a32
-  #   #
-  #   # //if (i == 4 && privk.length < 16)
-  #   # csid_decrypt = RSAdecrypt(t,rsa_privk[2],rsa_privk[0],rsa_privk[1],rsa_privk[3])
-  #   # // length: 73, first: 120147264, last: 14003132
-  #   # csid_decrypt_str = b2s(csid_decrypt)
-  #   # csid_decrypt_s43 = csid_decrypt_str.substr(0,43)
-  #   # csid_decrypt_b64 = base64urlencode(csid_decrypt_s43)
-  #   # // "1au8GQLcKSCkswqio-0PHmFNdXZjYU1vZFhjr1rVWm_USjjSvFhQZbVfDA"
-  #   #
-  #   # k = base64_to_a32("zL-S9BspoEopTUm3z3O8CA")
-  #   # r = [k,csid_decrypt_b64,rsa_privk]
-  #   #
-  #   let(:privk_encoded) { "3SKcQouWFdemgOQWwn_UUcCnHRNUZA0I5og99p_rYe6p2z16CY_qsbjOA5T59g3ClK6afQ9T0-lic79vtPsmRFWd7CY8EbXqZgX8gY8ZmiH0GZpCR57eOoIafpVzXU-OXrcGeJ_fOHQHDj7uEtF6lNaBdLPhdRkhYVno0DmdTcVfE939ESBmsBw_hCNUaicAmYSG1n_fdsiPs0UIOY0m2pjS1TZ-UfUZiLIxJnIujmteEKEWrOIMLnHXVR-V7S_2kZEzgOiRnrDvUIvcItP1xJ3dEvqIFPTTqVDHfEua4wnZPhPwiFg5awLudKigL2MS7kpmg9IuLTeCKytNpcOS9s24FCdIJCtsGqTXccY73Vj8rnRnjjd0iRV83XGpSPvwOa6-IPhhphGWgMNr4atlQzYHq4z3NBMMj9l8LnSOWO6KbUpTuqeQniO_YSQ_TbzjC-3cAEBjB7MpjSuBLexv3JygnpYiWmOJnUoojH3pezGNoNePtshsEllelcMa1_1c1cuJ2stH59HcTgB0u6-cpYqupeHqZB9Bn6U-eVjV1Ut-8LkzkTZjuGmt4YZZdJ-nZrkgsDkcpEFKfmupYDv8_9y69zOQaFXQ8v90KB2DawNWSEDRbAx-EFfu3rIsA3Hz2a9w-wVQQ8PD0C94kn57y4iyYbZDCu9Pal8V27J8eyUCqMh1kYlBkinuat3a2zKjT6bL6Tds6TkLUuzefO6DoPUQGTBZK8ZYi7QotUGI8xYzg6T26vDFQcgaQngSD0ZhZaKeQXdvRI_qjEZqg5Rt1VYZlJF42cinJD0N5blYewxy44Ps5oIAkR8iGjAgVL3KI_LsThWaCEKxTM0ScVGdYoh0vuSdIpAKVQVX_qfC8D0" }
-  #   let(:master_key) { [1049027610,743989201,1864038849,230624922] }
-  #   let(:privk) { harness.decrypt_base64_to_str(privk_encoded, master_key) }
-  #   let(:rsa_private_key) { harness.decompose_rsa_private_key(privk) }
-  #   let(:data_b64) { "CABTMUpwxe-OSvX_AhWxDzNu-fvisC9oRNxV97EjmBDLmLvyrEkdWRy4jAxQBOEFiqTe8bvH5EJ_HIxg_reA83kFB8UkHp359CPIceDwrTfS1pm3_onh7rWOdanzTXdixqiDRWIPo5dEfsIJixMIXtlBONla8TlTpc6sQ5NsysqMNYBaHD-5Npqj01s-pjkfSVwrtGSVU_b0JlT8acBemb8cukeXYSXaVf6ILgnBGkFYNyzSN5wmDDOU8tySoyKTtaPV9QDym0CrrxeNCYZPeawQQ4C85_dmJTJwSDyUu3ApocY2LPMYvRzo2CEP80eLuLHTSSp8O9_LMi7MrSJxCM9m" }
-  #   let(:data_a32) { harness.base64_mpi_to_a32(data_b64) }
-  #   let(:data_str) { harness.a32_to_str(data_a32) }
-  #   # let(:data_bn) { OpenSSL::BN.new( data_a32.pack('N*').unpack('H*').first , 16) }
-  #   # let(:data_hs) { data_str.unpack('H*').first }
-  #   # let(:data_bn) { harness.hexstr_to_bstr(data_hs) }
-
-  #   # let(:rsa_decrypt) { harness.rsa_decrypt(data_str,privk) }
-  #   let(:rsa_decrypt) {
-  #     puts "data_b64: #{data_b64.inspect}"
-  #     puts "data_a32: #{data_a32.inspect}"
-  #     puts "data_str: #{data_str.inspect}"
-  #    harness.rsa_decrypt(data_str,rsa_private_key) }
-  #   # subject { harness.str_to_a32(rsa_decrypt) }
-  #   subject { rsa_decrypt }
-  #   it "should be a valid RSA decrypt" do
-  #     subject.length.should eql(73)
-  #     subject.first.should eql(17354598)
-  #     subject.last.should eql(5)
-  #   end
-  # end
-
+  describe "#decrypt_file_attributes" do
+    subject { harness.decrypt_file_attributes(f,key) }
+    {
+      'simple_folder' => {
+        f: { 't' => 1, 'a' => "US0wKXcni_p8dnqRvhR_Otafji3ioNJ5IsgSHB5zhOw" },
+        key: [1479379715, 408676944, 1375748016, 1932394997],
+        expected_attributes: {"n"=>"Research"}
+      },
+      'simple_file' => {
+        f: { 't' => 0, 'a' => "n4CazRegf4aLA4BNrdoEsqRLGLQ244NjJUJi53Zz-J4" },
+        key: [1281139164, 1127317712, 263279788, 1988157168, 402822759, 1958040625, 716219392, 465402751],
+        expected_attributes: {"n"=>"mega.png"}
+      }
+    }.each do |test_name,expectations|
+      context test_name do
+        let(:f) { expectations[:f] }
+        let(:key) { expectations[:key] }
+        it { should eql(expectations[:expected_attributes])}
+      end
+    end
+  end
 
 end

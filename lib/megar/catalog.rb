@@ -1,0 +1,5 @@
+require 'megar/catalog/catalog_item'
+require 'megar/catalog/folders'
+require 'megar/catalog/folder'
+require 'megar/catalog/files'
+require 'megar/catalog/file'

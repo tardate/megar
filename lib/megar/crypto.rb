@@ -375,4 +375,25 @@ module Megar::Crypto
     bstr
   end
 
+  def decrypt_file_key(f)
+    key = f['k'].split(':')[1]
+    decrypt_key(base64_to_a32(key), self.master_key)
+  end
+
+  def decrypt_file_attributes(f,key)
+    k = f['t'] == 0 ? decompose_file_key(key) : key
+    rstr = aes_cbc_decrypt(base64urldecode(f['a']), a32_to_str(k))
+    JSON.parse( rstr.gsub("\x0",'').gsub(/^.*{/,'{'))
+  end
+
+  def decompose_file_key(key)
+    [
+      key[0] ^ key[4],
+      key[1] ^ key[5],
+      key[2] ^ key[6],
+      key[3] ^ key[7]
+    ]
+  end
+
+
 end

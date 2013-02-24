@@ -31,6 +31,17 @@ describe Megar::Session do
       end
     end
 
+    describe "#to_s" do
+      subject { session.to_s }
+      context "when not connected" do
+        it { should eql("Megar::Session: not connected") }
+      end
+      context "when connected" do
+        before { session.stub(:connected?).and_return(true) }
+        it { should eql("Megar::Session: connected as #{email}") }
+      end
+    end
+
     describe "#email" do
       subject { session.email }
       it { should eql(email) }
@@ -92,6 +103,42 @@ describe Megar::Session do
       its(:rsa_private_key_b64) { should eql(expected_rsa_private_key_b64) }
       its(:decomposed_rsa_private_key) { should eql(expected_decomposed_rsa_private_key) }
     end
+
+    describe "#folders" do
+      context "when not initialised" do
+        it "should refresh_files!" do
+          session.should_receive(:refresh_files!)
+          session.folders
+        end
+      end
+    end
+
+    describe "#files" do
+      context "when not initialised" do
+        it "should refresh_files!" do
+          session.should_receive(:refresh_files!)
+          session.files
+        end
+      end
+    end
+
+    describe "#refresh_files!" do
+      let(:session) { connected_session_with_mocked_api_responses(options) }
+      before do
+        session.refresh_files!
+      end
+      describe "#folders" do
+        subject { session.folders }
+        it { should be_a(Megar::Folders) }
+        its(:collection) { should_not be_empty }
+      end
+      describe "#files" do
+        subject { session.files }
+        it { should be_a(Megar::Files) }
+        its(:collection) { should_not be_empty }
+      end
+    end
+
   end
 
 end
