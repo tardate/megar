@@ -20,10 +20,10 @@ module CryptoExpectationsHelper
     STDERR.puts "\nGenerating crypto_expectations for #{email}..."
     e = {email: email.downcase, email_mixed_case: email.capitalize, password: password, autoconnect: false }
     if session = Megar::Session.new(email: email, password: password)
-      e[:login_response_data] = session.get_login_response
-      session.handle_login_challenge_response(e[:login_response_data])
+      e[:login_response_data] = session.send(:get_login_response)
+      session.send(:handle_login_challenge_response,e[:login_response_data])
       e[:master_key] = session.master_key
-      e[:expected_uh] = session.uh
+      e[:expected_uh] = session.send(:uh)
       e[:sid] = session.sid
       e[:rsa_private_key_b64] = session.rsa_private_key_b64
       e[:decomposed_rsa_private_key] = session.decomposed_rsa_private_key
@@ -32,7 +32,7 @@ module CryptoExpectationsHelper
     ef = File.open(efn,'w')
     ef.write e.to_json
     ef.close
-    STDERR.puts "\nDone! New crypto_expectations for unit test written to:\n#{efn}\n"
+    STDERR.puts "\nDone! New crypto_expectations for unit test written to:\n#{efn}\n\n"
   end
 
 end

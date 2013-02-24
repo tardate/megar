@@ -48,13 +48,13 @@ describe Megar::Session do
       it { should eql(alternative_endpoint) }
     end
 
-    describe "#uh" do
+    describe "#uh (protected)" do
       #
       # expectation generation in Javascript:
       #   aes = new sjcl.cipher.aes(prepare_key_pw(password))
       #   stringhash(email.toLowerCase(), aes)
       #   => EGQjdVjoWPA
-      subject { session.uh }
+      subject { session.send(:uh) }
       it { should eql(expected_uh) }
       context "when mixed-case email" do
         let(:email) { test_data['email_mixed_case'] }
@@ -83,8 +83,8 @@ describe Megar::Session do
       end
     end
 
-    describe "#handle_login_challenge_response" do
-      before { session.handle_login_challenge_response(login_response_data) }
+    describe "#handle_login_challenge_response (protected)" do
+      before { session.send(:handle_login_challenge_response,login_response_data) }
       subject { session }
 
       its(:master_key) { should eql(expected_master_key) }

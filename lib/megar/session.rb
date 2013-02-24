@@ -39,6 +39,24 @@ class Megar::Session
     handle_login_challenge_response(get_login_response)
   end
 
+
+  # Returns the user email (convenience method)
+  def email
+    @email ||= options[:email]
+  end
+
+  # Returns the user password (convenience method)
+  def password
+    @password ||= options[:password]
+  end
+
+  # Returns the rsa_private_key base64-encoded
+  def rsa_private_key_b64
+    base64urlencode(rsa_private_key)
+  end
+
+  protected
+
   def get_login_response
     api_request({'a' => 'us', 'user' => email, 'uh' => uh})
   end
@@ -60,17 +78,6 @@ class Megar::Session
       end
     end
   end
-
-  # Returns the user email (convenience method)
-  def email
-    @email ||= options[:email]
-  end
-
-  # Returns the user password (convenience method)
-  def password
-    @password ||= options[:password]
-  end
-
   # Returns the encoded user password key
   def password_key
     prepare_key_pw(password)
@@ -84,9 +91,5 @@ class Megar::Session
     stringhash(email.downcase, password_key)
   end
 
-  # Returns the rsa_private_key base64-encoded
-  def rsa_private_key_b64
-    base64urlencode(rsa_private_key)
-  end
 
 end
