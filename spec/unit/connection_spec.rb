@@ -9,7 +9,7 @@ describe Megar::Connection do
 
   describe "#sequence_number" do
     subject { harness.sequence_number }
-    it { should be_a(Fixnum) }
+    it { should_not be_nil }
   end
 
   describe "#next_sequence_number!" do
