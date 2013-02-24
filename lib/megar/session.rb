@@ -46,51 +46,7 @@ class Megar::Session
   # Command: decrypt the +response_data+ received from Mega
   #
   # Javascript reference implementation: function api_getsid2(res,ctx)
-  #   function api_getsid2(res,ctx)
-  #   {
-  #     console.log(new Date().getTime());
-  #     var t, k;
-  #     var r = false;
-  #     if (typeof res == 'object')
-  #     {
-  #       var aes = new sjcl.cipher.aes(ctx.passwordkey);
-  #       // decrypt master key
-  #       if (typeof res[0].k == 'string')
-  #       {
-  #         k = base64_to_a32(res[0].k);
-  #         if (k.length == 4)
-  #         {
-  #           k = decrypt_key(aes,k);
-  #           aes = new sjcl.cipher.aes(k);
-  #           if (typeof res[0].tsid == 'string')
-  #           {
-  #             t = base64urldecode(res[0].tsid);
-  #             if (a32_to_str(encrypt_key(aes,str_to_a32(t.substr(0,16)))) == t.substr(-16)) r = [k,res[0].tsid];
-  #           }
-  #           else if (typeof res[0].csid == 'string')
-  #           {
-  #             var t = mpi2b(base64urldecode(res[0].csid));
-  #             var privk = a32_to_str(decrypt_key(aes,base64_to_a32(res[0].privk)));
-  #             var rsa_privk = Array(4);
-  #             // decompose private key
-  #             for (var i = 0; i < 4; i++)
-  #             {
-  #               var l = ((privk.charCodeAt(0)*256+privk.charCodeAt(1)+7)>>3)+2;
-  #               rsa_privk[i] = mpi2b(privk.substr(0,l));
-  #               if (typeof rsa_privk[i] == 'number') break;
-  #               privk = privk.substr(l);
-  #             }
-  #             // check format
-  #             if (i == 4 && privk.length < 16)
-  #             {
-  #               // @@@ check remaining padding for added early wrong password detection likelihood
-  #               r = [k,base64urlencode(b2s(RSAdecrypt(t,rsa_privk[2],rsa_privk[0],rsa_privk[1],rsa_privk[3])).substr(0,43)),rsa_privk];
-  #             }
-  #           }
-  #         }
-  #       }
-  #     }
-  #   }
+  #
   def handle_login_challenge_response(response_data)
     if k = response_data['k']
       enc_master_key = base64_to_a32(k)
@@ -115,6 +71,7 @@ class Megar::Session
     @password ||= options[:password]
   end
 
+  # Returns the encoded user password key
   def password_key
     prepare_key_pw(password)
   end
@@ -122,11 +79,6 @@ class Megar::Session
   # Returns the calculated uh parameter based on email and password
   #
   # Javascript reference implementation: function stringhash(s,aes)
-  #
-  # expectation generation in Javascript:
-  #   aes = new sjcl.cipher.aes(prepare_key_pw(password))
-  #   stringhash(email.toLowerCase(), aes)
-  #   => EGQjdVjoWPA
   #
   def uh
     stringhash(email.downcase, password_key)

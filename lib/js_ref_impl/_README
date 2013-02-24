@@ -1,0 +1,9 @@
+Mega API Javascript Refeence Implementation
+
+The files contained in this folder are not used by the Megar gem.
+
+These are the source Javascript files obtained from mega.co.nz in the course of megar development,
+and are only stored here to provide some traceability when the javascript implementation changes.
+This is only important while the Javascript implementation is the only concrete reference to details
+of the Mega API. It will become redundant when the Mega API is formally lanched with detailed
+documentation.

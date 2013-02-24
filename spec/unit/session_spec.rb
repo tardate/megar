@@ -49,6 +49,11 @@ describe Megar::Session do
     end
 
     describe "#uh" do
+      #
+      # expectation generation in Javascript:
+      #   aes = new sjcl.cipher.aes(prepare_key_pw(password))
+      #   stringhash(email.toLowerCase(), aes)
+      #   => EGQjdVjoWPA
       subject { session.uh }
       it { should eql(expected_uh) }
       context "when mixed-case email" do

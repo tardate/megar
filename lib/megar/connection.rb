@@ -51,11 +51,7 @@ module Megar::Connection
     params['sid'] = sid if sid
     json_data = [data].to_json
 
-    # puts "params: #{params.inspect}"
-    # puts "json_data:"
-    # puts json_data
     response_data = get_api_response(params,json_data).first
-    # puts "response_data: #{response_data.inspect}"
 
     raise Megar::MegaRequestError.new(response_data) if response_data.is_a?(Fixnum)
 

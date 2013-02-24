@@ -16,7 +16,7 @@ class Megar::Shell
     @options = (options||{}).each{|k,v| {k => v} }
   end
 
-  # runs the megar task
+  # Command: execute the megar task according to the options provided on initialisation
   def run
     if email && password
       $stderr.puts "Connecting to mega as #{email}.."

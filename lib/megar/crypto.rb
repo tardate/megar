@@ -14,22 +14,7 @@ module Megar::Crypto
   # Returns encrypted key given an array +a+ of 32-bit integers
   #
   # Javascript reference implementation: function prepare_key(a)
-  #    function prepare_key(a)
-  #    {
-  #      var i, j, r;
-  #      var pkey = [0x93C467E3,0x7DB0C7A4,0xD1BE3F81,0x0152CB56];
-  #      for (r = 65536; r--; )
-  #      {
-  #        for (j = 0; j < a.length; j += 4)
-  #        {
-  #          key = [0,0,0,0];
-  #          for (i = 0; i < 4; i++) if (i+j < a.length) key[i] = a[i+j];
-  #          aes = new sjcl.cipher.aes(key);
-  #          pkey = aes.encrypt(pkey);
-  #        }
-  #      }
-  #      return pkey;
-  #    }
+  #
   def prepare_key(a)
     pkey = [0x93C467E3, 0x7DB0C7A4, 0xD1BE3F81, 0x0152CB56]
     0x10000.times do
@@ -45,10 +30,7 @@ module Megar::Crypto
   # Returns encrypted key given the plain-text +password+ string
   #
   # Javascript reference implementation: function prepare_key_pw(password)
-  #    function prepare_key_pw(password)
-  #    {
-  #      return prepare_key(str_to_a32(password));
-  #    }
+  #
   def prepare_key_pw(password)
     prepare_key(str_to_a32(password))
   end
@@ -56,13 +38,7 @@ module Megar::Crypto
   # Returns a decrypted given an array +a+ of 32-bit integers and +key+
   #
   # Javascript reference implementation: function decrypt_key(cipher,a)
-  #    function decrypt_key(cipher,a)
-  #    {
-  #      if (a.length == 4) return cipher.decrypt(a);
-  #      var x = [];
-  #      for (var i = 0; i < a.length; i += 4) x = x.concat(cipher.decrypt([a[i],a[i+1],a[i+2],a[i+3]]));
-  #      return x;
-  #    }
+  #
   def decrypt_key(a, key)
     b=[]
     (0..(a.length-1)).step(4) do |i|
@@ -96,20 +72,6 @@ module Megar::Crypto
 
   # Returns AES-128 decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
   def aes_cbc_decrypt_a32(data, key)
-    # puts "aes_decrypt_a32"
-    # puts "key: #{key.inspect}"
-    # puts "data: #{data.inspect}"
-    # aes = OpenSSL::Cipher::Cipher.new('AES-128-CBC')
-    # aes.decrypt
-    # aes.key = a32_to_str(key)
-    # d = aes.update(a32_to_str(data))
-    # puts "d1: #{d.inspect}"
-    # d = aes.final if d.empty?
-    # puts "d2: #{d.inspect}"
-    # str_to_a32(d)
-    # d = aes.update(data.pack('l>*'))
-    # d << aes.final
-    # d.unpack('l>*')
     str_to_a32(aes_cbc_decrypt(a32_to_str(data), a32_to_str(key)))
   end
 
@@ -128,12 +90,7 @@ module Megar::Crypto
   # Returns an array of 32-bit signed integers representing the string +b+
   #
   # Javascript reference implementation: function str_to_a32(b)
-  #    function str_to_a32(b)
-  #    {
-  #      var a = Array((b.length+3) >> 2);
-  #      for (var i = 0; i < b.length; i++) a[i>>2] |= (b.charCodeAt(i) << (24-(i & 3)*8));
-  #      return a;
-  #    }
+  #
   def str_to_a32(b)
     a = Array.new((b.length+3) >> 2,0)
     b.length.times { |i| a[i>>2] |= (b.getbyte(i) << (24-(i & 3)*8)) }
@@ -143,13 +100,7 @@ module Megar::Crypto
   # Returns a packed string given an array +a+ of 32-bit signed integers
   #
   # Javascript reference implementation: function a32_to_str(a)
-  #    function a32_to_str(a)
-  #    {
-  #      var b = '';
-  #      for (var i = 0; i < a.length*4; i++)
-  #        b = b+String.fromCharCode((a[i>>2] >>> (24-(i & 3)*8)) & 255);
-  #      return b;
-  #    }
+  #
   def a32_to_str(a)
     b = ''
     (a.size * 4).times { |i| b << ((a[i>>2] >> (24-(i & 3)*8)) & 255).chr }
@@ -159,14 +110,7 @@ module Megar::Crypto
   # Returns a base64-encoding of string +s+ hashed with +aeskey+ key
   #
   # Javascript reference implementation: function stringhash(s,aes)
-  #    function stringhash(s,aes)
-  #    {
-  #      var s32 = str_to_a32(s);
-  #      var h32 = [0,0,0,0];
-  #      for (i = 0; i < s32.length; i++) h32[i&3] ^= s32[i];
-  #      for (i = 16384; i--; ) h32 = aes.encrypt(h32);
-  #      return a32_to_base64([h32[0],h32[2]]);
-  #    }
+  #
   def stringhash(s,aeskey)
     s32 = str_to_a32(s)
     h32 = [0,0,0,0]
@@ -178,10 +122,7 @@ module Megar::Crypto
   # Returns a base64-encoding given an array +a+ of 32-bit integers
   #
   # Javascript reference implementation: function a32_to_base64(a)
-  #    function a32_to_base64(a)
-  #    {
-  #      return base64urlencode(a32_to_str(a));
-  #    }
+  #
   def a32_to_base64(a)
     base64urlencode(a32_to_str(a))
   end
@@ -189,10 +130,7 @@ module Megar::Crypto
   # Returns an array +a+ of 32-bit integers given a base64-encoded +b+ (String)
   #
   # Javascript reference implementation: function base64_to_a32(s)
-  #    function base64_to_a32(s)
-  #    {
-  #      return str_to_a32(base64urldecode(s));
-  #    }
+  #
   def base64_to_a32(s)
     str_to_a32(base64urldecode(s))
   end
@@ -295,16 +233,6 @@ module Megar::Crypto
   # result[3] = u: The CRT coefficient, equals to (1/p) mod q.
   #
   # Javascript reference implementation: function api_getsid2(res,ctx)
-  #           var privk = a32_to_str(decrypt_key(aes,base64_to_a32(res[0].privk)));
-  #           var rsa_privk = Array(4);
-  #           // decompose private key
-  #           for (var i = 0; i < 4; i++)
-  #           {
-  #             var l = ((privk.charCodeAt(0)*256+privk.charCodeAt(1)+7)>>3)+2;
-  #             rsa_privk[i] = mpi2b(privk.substr(0,l));
-  #             if (typeof rsa_privk[i] == 'number') break;
-  #             privk = privk.substr(l);
-  #           }
   #
   def decompose_rsa_private_key_a32(key)
     privk = key.dup
@@ -383,25 +311,6 @@ module Megar::Crypto
   # More info: http://en.wikipedia.org/wiki/RSA_(algorithm)#Operation
   #
   # Javascript reference implementation: function RSAdecrypt(m, d, p, q, u)
-  #
-  # function RSAdecrypt(m, d, p, q, u)
-  # {
-  #  var xp = bmodexp(bmod(m,p), bmod(d,bsub(p,[1])), p);
-  #  var xq = bmodexp(bmod(m,q), bmod(d,bsub(q,[1])), q);
-  #
-  #  var t=bsub(xq,xp);
-  #  if(t.length==0)
-  #  {
-  #   t=bsub(xp,xq);
-  #   t=bmod(bmul(t, u), q);
-  #   t=bsub(q,t);
-  #  }
-  #  else
-  #  {
-  #   t=bmod(bmul(t, u), q);
-  #  }
-  #  return badd(bmul(t,p), xp);
-  # }
   #
   def rsa_decrypt(m, pqdu)
     p, q, d, u = pqdu
