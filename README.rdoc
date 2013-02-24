@@ -9,7 +9,7 @@ NOTE: the gem has not been released yet, pending the implementation of a few mor
 Consider this way alpha at this point, especially since the Mega API has yet to be formally and fully documented.
 Also no promises that it's speedy, or not subject to edge-case flaws in the crypto handling.
 
-* Tested with MRI 1.9.2, 1.9.3
+* Tested with MRI 1.9.3
 
 Mega API coverage is far from complete at this point (help appreciated!). Here's the run-down:
 
