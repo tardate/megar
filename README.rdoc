@@ -93,6 +93,9 @@ All operations require credentials to ba passed on the command line (email and p
 
 Test are implemented using rspec. Run tests with <tt>rake</tt> or <tt>rake spec</tt>.
 
+{Guard}[https://rubygems.org/gems/guard] is installed as part of the development dependencies,
+so to start continuous test execution on file change, start it up with <tt>bundle exec guard</tt>.
+
 
 === How to refresh unit test expectations
 
