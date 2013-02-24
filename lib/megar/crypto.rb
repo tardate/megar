@@ -406,29 +406,17 @@ module Megar::Crypto
   def rsa_decrypt(m, pqdu)
     p, q, d, u = pqdu
     if p && q && u
-      m1 = powm(m, d % (p-1), p)
-      m2 = powm(m, d % (q-1), q)
+      m1 = Math.powm(m, d % (p-1), p)
+      m2 = Math.powm(m, d % (q-1), q)
       h = m2 - m1
       h = h + q if h < 0
       h = h*u % q
       h*p+m1
     else
-      powm(m, d, p*q)
+      Math.powm(m, d, p*q)
     end
   end
 
-  # Calculate ((b**p) % m) assuming that b and m are large integers.
-  # http://blade.nagaokaut.ac.jp/cgi-bin/scat.rb/ruby/ruby-talk/71964
-  def powm(b, p, m)
-    if p == 1
-      b % m
-    elsif (p & 0x1) == 0 # p.even?
-      t = powm(b, p >> 1, m)
-      (t * t) % m
-    else
-      (b * powm(b, p-1, m)) % m
-    end
-  end
 
   # Returns the private key decryption of +m+ given +pqdu+ (array of integer cipher components)
   # This implementation uses OpenSSL RSA public key feature.

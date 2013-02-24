@@ -1,3 +1,5 @@
+require "extensions/math"
+
 require "megar/version"
 require "megar/exception"
 require "megar/shell"
