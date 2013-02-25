@@ -131,6 +131,39 @@ describe Megar::Session do
         subject { session.folders }
         it { should be_a(Megar::Folders) }
         its(:collection) { should_not be_empty }
+
+        describe "#root" do
+          let(:root) { session.folders.root }
+          subject { root }
+          its(:name) { should eql("Cloud Drive") }
+          its(:parent_folder) { should be_nil }
+          describe "#folders" do
+            subject { root.folders }
+            it { should_not be_empty }
+            its(:first) { should be_a(Megar::Folder) }
+          end
+          describe "#files" do
+            subject { root.files }
+            it { should_not be_empty }
+            its(:first) { should be_a(Megar::File) }
+          end
+        end
+        describe "#inbox" do
+          subject { session.folders.inbox }
+          its(:name) { should eql("Inbox") }
+          its(:parent_folder) { should be_nil }
+        end
+        describe "#trash" do
+          subject { session.folders.trash }
+          its(:name) { should eql("Trash Bin") }
+          its(:parent_folder) { should be_nil }
+        end
+        describe "random user folder" do
+          subject { session.folders.find_by_type(1) }
+          its(:name) { should_not be_empty }
+          its(:parent_folder) { should be_a(Megar::Folder) }
+        end
+
       end
       describe "#files" do
         subject { session.files }

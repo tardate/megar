@@ -7,11 +7,13 @@ describe Megar::File do
 
   context "when initialised" do
     let(:id) { 'some id' }
+    let(:parent_folder_id) { 'some parent id' }
     let(:name) { 'some name' }
     let(:type) { 0 }
     let(:size) { 33 }
     let(:payload) { {
-      's' => size
+      's' => size,
+      'p' => parent_folder_id
     } }
     let(:attributes) { {
       id: id,
@@ -21,11 +23,14 @@ describe Megar::File do
         'n' => name
       }
     } }
+
     subject { instance }
-    its(:id)   { should eql(id) }
-    its(:name) { should eql(name) }
-    its(:type) { should eql(type) }
-    its(:size) { should eql(size) }
+
+    its(:id)               { should eql(id) }
+    its(:name)             { should eql(name) }
+    its(:type)             { should eql(type) }
+    its(:size)             { should eql(size) }
+    its(:parent_folder_id) { should eql(parent_folder_id) }
   end
 
 end

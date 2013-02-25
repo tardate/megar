@@ -79,17 +79,33 @@ It's possible to delay the authentication
     # then explicitly login:
     session.connect!
 
+
 === How to get a listing of all folders
 
 Folders are accessed through an authenticated <tt>Megar::Session</tt> object.
 
     all_folders = session.folders
 
-<tt>folders</tt> is an enumerable collection, so you can iterate as you would expect:
+<tt>folders</tt> is an {Enumerable}[http://ruby-doc.org/core-2.0/Enumerable.html] collection,
+so you can iterate as you would expect:
 
+    puts session.folders.count
     session.folders.each do |folder|
       puts folder.name
+      if parent_folder = folder.parent_folder
+          puts parent_folder.name
+      end
     end
+
+The <tt>find_all_by_type</tt> can be used to find specific node types (1 == normal folder),
+and <tt>find_by_id</tt> method will find the first id match:
+
+    session.folders.find_all_by_type(1).first.id
+     => "jtwkAQaK"
+    session.folders.find_by_id("jtwkAQaK").id
+     => "74ZTXbyR"
+
+
 
 === How to get a handle to the special Mega folders
 
@@ -102,6 +118,7 @@ grab a handle on these directly:
     my_folders.inbox
     my_folders.trash
 
+
 === What are all the attributes of a folder?
 
 Once you have a folder object (e.g. <tt>session.folders.first</tt>), the following are the
@@ -109,6 +126,20 @@ primary attributes it exposes:
 
 * id: the unique ID, corresponds to the Mega node handle
 * name: the name of the folder
+* parent_folder: handle to the parent folder (if one is assigned)
+* folders: collection of any child folders available
+* files: collection of any child files available
+
+
+=== How to get a listing of all sub-folders of a folder
+
+Folders are hierarchical, and a given folder may have a collection of sub-folders
+
+    a_folder = session.folders.first
+    a_folder.folders.each do |folder|
+      puts folder.name
+      folder.parent_folder == a_folder # true!
+    end
 
 
 === How to get a listing of all files in a folder
@@ -126,13 +157,23 @@ All files can be accessed directly without needing to navigate via a folder obje
 
     all_files = session.files
 
-<tt>files</tt> is an enumerable collection, so you can iterate as you would expect:
+<tt>files</tt> is an {Enumerable}[http://ruby-doc.org/core-2.0/Enumerable.html] collection,
+so you can iterate as you would expect:
 
+    puts session.files.count
     session.files.each do |file|
       puts file.id
       puts file.name
       puts file.size
+      puts file.parent_folder.name
     end
+
+The <tt>find_by_id</tt> method will find the first id match:
+
+    session.files.first.id
+     => "74ZTXbyR"
+    session.files.find_by_id("74ZTXbyR").id
+     => "74ZTXbyR"
 
 
 === What are all the attributes of a file?
@@ -143,6 +184,7 @@ primary attributes it exposes:
 * id: the unique ID, corresponds to the Mega node handle
 * name: the name of the file
 * size: the size of the file content (in bytes)
+* parent_folder: handle to the parent folder
 
 
 === CLI: How to use the command-line client

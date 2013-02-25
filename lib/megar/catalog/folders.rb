@@ -2,14 +2,6 @@
 class Megar::Folders
   include Megar::CatalogItem
 
-  def initialize(options={})
-  end
-
-  # Adds an item to the local cached collection given +attributes+ hash.
-  def add(attributes)
-    collection << Megar::Folder.new(attributes)
-  end
-
   # Returns the root (cloud drive) folder
   def root
     @root ||= find_by_type(2)

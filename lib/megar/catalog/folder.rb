@@ -17,4 +17,16 @@ class Megar::Folder
     self.name = nil unless name
   end
 
+  # Returns a collection of folders contained within this folder
+  def folders
+    return unless session
+    session.folders.find_all_by_parent_folder_id(id)
+  end
+
+  # Returns a collection of files contained within this folder
+  def files
+    return unless session
+    session.files.find_all_by_parent_folder_id(id)
+  end
+
 end

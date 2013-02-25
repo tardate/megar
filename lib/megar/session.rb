@@ -80,8 +80,8 @@ class Megar::Session
   end
 
   def reset_files!
-    @folders = Megar::Folders.new
-    @files = Megar::Files.new
+    @folders = Megar::Folders.new(session: self)
+    @files = Megar::Files.new(session: self)
   end
 
   protected
