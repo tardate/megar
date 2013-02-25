@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["gallagher.paul@gmail.com"]
   gem.description   = %q{Megaargh! A Ruby wrapper for the Mega API (mega.co.nz)}
   gem.summary       = %q{A Ruby wrapper and command-line tool for the Mega API (mega.co.nz)}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/tardate/megar"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
