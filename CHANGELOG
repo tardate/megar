@@ -1,0 +1,5 @@
+0.0.1 Preliminary Release  26-Feb-2013
+======================================
+* An initial release with minimal functionality
+* API support: connect and get file/folder listings
+* basic CLI to connect and get file listing
