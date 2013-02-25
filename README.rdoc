@@ -2,7 +2,8 @@
 
 Megar ("megaargh!" in pirate-speak) is a Ruby wrapper and command-line (CLI) client for the {Mega API}[https://mega.co.nz/#developers].
 
-NOTE: the gem has not been released yet, pending the implementation of a few more API functions (so it's at least halfway useful!)
+It needs a few more API functions implemented to make it halfway useful, but it's a start.
+You can connect and get file/folder listings at the moment.
 
 == Requirements and Known Limitations
 
