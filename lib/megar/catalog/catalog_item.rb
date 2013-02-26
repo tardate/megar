@@ -119,6 +119,11 @@ module Megar::CatalogItem
     find_all { |r| r.type == type }
   end
 
+  # Returns the first record matching +name+
+  def find_by_name(name)
+    find { |r| r.name == name }
+  end
+
   # Returns all records matching +parent_folder_id+
   def find_all_by_parent_folder_id(parent_folder_id)
     find_all { |r| r.parent_folder_id == parent_folder_id }

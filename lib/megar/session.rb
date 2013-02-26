@@ -1,6 +1,6 @@
 class Megar::Session
 
-  include Megar::Crypto
+  include Megar::CryptoSupport
   include Megar::Connection
 
   attr_accessor :options
@@ -21,6 +21,14 @@ class Megar::Session
   #   autoconnect: true/false         -- performs immediate login if true (default)
   #
   def initialize(options={})
+    unless crypto_requirements_met?
+      raise Megar::CryptoSupportRequirementsError.new(%(
+        Oops! Looks like we don't have the necessary OpenSSL support available.
+
+        See https://github.com/tardate/megar/blob/master/README.rdoc for hints on how to
+        make sure the correct OpenSSL version is linked with your ruby.
+      \n))
+    end
     default_options = { autoconnect: true }
     @options = default_options.merge(options.symbolize_keys)
     self.api_endpoint = @options[:api_endpoint] if @options[:api_endpoint]
@@ -84,6 +92,12 @@ class Megar::Session
     @files = Megar::Files.new(session: self)
   end
 
+  # Command: requests file download url from the API for the file with id +node_id+
+  def get_file_download_url_response(node_id)
+    ensure_connected!
+    api_request({'a' => 'g', 'g' => 1, 'n' => node_id})
+  end
+
   protected
 
   # Command: enforces guard condition requiring authenticated connection to proceed
@@ -91,8 +105,22 @@ class Megar::Session
     raise "Not connected" unless connected?
   end
 
+  # Command: sends login request to the API
   def get_login_response
     api_request({'a' => 'us', 'user' => email, 'uh' => uh})
+  end
+
+  # Returns the encoded user password key
+  def password_key
+    prepare_key_pw(password)
+  end
+
+  # Returns the calculated uh parameter based on email and password
+  #
+  # Javascript reference implementation: function stringhash(s,aes)
+  #
+  def uh
+    stringhash(email.downcase, password_key)
   end
 
   # Command: decrypt/decode the login +response_data+ received from Mega
@@ -113,6 +141,7 @@ class Megar::Session
     end
   end
 
+  # Command: requests file/folder node listing from the API
   def get_files_response
     ensure_connected!
     api_request({'a' => 'f', 'c' => 1})
@@ -127,11 +156,12 @@ class Megar::Session
       case f['t']
       when 0 # File
         item_attributes[:key] = k = decrypt_file_key(f)
-        item_attributes[:attributes] = decrypt_file_attributes(f,k)
+        item_attributes[:decomposed_key] = key = decompose_file_key(k)
+        item_attributes[:attributes] = decrypt_file_attributes(f['a'],key)
         files.add(item_attributes)
       when 1 # Folder
         item_attributes[:key] = k = decrypt_file_key(f)
-        item_attributes[:attributes] = decrypt_file_attributes(f,k)
+        item_attributes[:attributes] = decrypt_file_attributes(f['a'],k)
         folders.add(item_attributes)
       when 2,3,4 # Root, Inbox, Trash Bin
         folders.add(item_attributes)
@@ -139,19 +169,5 @@ class Megar::Session
     end
     true
   end
-
-  # Returns the encoded user password key
-  def password_key
-    prepare_key_pw(password)
-  end
-
-  # Returns the calculated uh parameter based on email and password
-  #
-  # Javascript reference implementation: function stringhash(s,aes)
-  #
-  def uh
-    stringhash(email.downcase, password_key)
-  end
-
 
 end

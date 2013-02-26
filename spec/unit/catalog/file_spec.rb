@@ -31,6 +31,18 @@ describe Megar::File do
     its(:type)             { should eql(type) }
     its(:size)             { should eql(size) }
     its(:parent_folder_id) { should eql(parent_folder_id) }
+    its(:body)             { should be_nil }
+  end
+
+  context "with an active session" do
+    let(:session) { connected_session_with_mocked_api_responses }
+    let(:file) { session.files.find_by_name('megar_test_sample_1.txt') }
+
+    describe "#downloader" do
+      subject { instance.downloader }
+      it { should be_a(Megar::FileDownloader) }
+    end
+
   end
 
 end

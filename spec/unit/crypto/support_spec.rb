@@ -1,11 +1,18 @@
 require 'spec_helper'
 
-class CryptoTestHarness
-  include Megar::Crypto
+class CryptoSupportTestHarness
+  include Megar::CryptoSupport
 end
 
-describe Megar::Crypto do
-  let(:harness) { CryptoTestHarness.new }
+describe Megar::CryptoSupport do
+  let(:harness) { CryptoSupportTestHarness.new }
+
+  describe "#crypto_requirements_met?" do
+    subject { harness.crypto_requirements_met? }
+    it "must be true - which implies OpenSSL has the required modes including CTR" do
+      should be_true
+    end
+  end
 
   describe "#str_to_a32" do
     subject { harness.str_to_a32(string) }
@@ -451,8 +458,27 @@ describe Megar::Crypto do
 
   end
 
+  describe "#decompose_file_key" do
+    # expectation generation in javascript:
+    # dl_key = [1281139164, 1127317712, 263279788, 1988157168, 402822759, 1958040625, 716219392, 465402751]
+    # expected_key = [dl_key[0]^dl_key[4],dl_key[1]^dl_key[5],dl_key[2]^dl_key[6],dl_key[3]^dl_key[7]]
+    # => [1415460795, 931452129, 620884140, 1832756623]
+    subject { harness.decompose_file_key(key) }
+    [
+      {
+        key: [1281139164, 1127317712, 263279788, 1988157168, 402822759, 1958040625, 716219392, 465402751],
+        expected_key: [1415460795, 931452129, 620884140, 1832756623]
+      }
+    ].each do |expectations|
+      context "given #{expectations[:key]}" do
+        let(:key) { expectations[:key] }
+        it { should eql(expectations[:expected_key])}
+      end
+    end
+  end
+
   describe "#decrypt_file_attributes" do
-    subject { harness.decrypt_file_attributes(f,key) }
+    subject { harness.decrypt_file_attributes(attributes,key) }
     {
       'simple_folder' => {
         f: { 't' => 1, 'a' => "US0wKXcni_p8dnqRvhR_Otafji3ioNJ5IsgSHB5zhOw" },
@@ -467,7 +493,8 @@ describe Megar::Crypto do
     }.each do |test_name,expectations|
       context test_name do
         let(:f) { expectations[:f] }
-        let(:key) { expectations[:key] }
+        let(:attributes) { f['a'] }
+        let(:key) { f['t'] == 0 ? harness.decompose_file_key(expectations[:key]) : expectations[:key] }
         it { should eql(expectations[:expected_attributes])}
       end
     end

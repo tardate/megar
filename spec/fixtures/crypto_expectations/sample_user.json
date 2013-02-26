@@ -1,12 +1,12 @@
 {
   "email": "megartest@gmail.com",
   "email_mixed_case": "Megartest@gmail.com",
-  "password": "15kMW4GiHVWFmqJJ",
+  "password": "ToLlw2D748TqCVAmrc8laio1",
   "autoconnect": false,
   "login_response_data": {
-    "csid": "CAA4by3fJFnderfxuUgwXDhQJkaxKTREaVIA4QuyKmE2CnVDP2w5pU-tftPcHvfdCoV9Gi-rTKsB11rBcc1yK1I8IVOzAwST9yUwSmZI-9Euq-FEUOCsnHYLDlykTOSisU9OU0GausJZbCCHrSLI_Q49Ndc-BBQc361W-DkZUl8ZgKCl3qleBP5aepJbR-bSTR5bJ-IxRmdf2jYUE0dz3lLMGSC4XjGBXgydFlGNgJqURpik9FrW1gPFyKESRNfxudteoSWO-f2bgD-4eEek4kHAaZZQW2K5Yb2GBXCOVQ0_7jpcRd9-gwhUHpTJETNxtEPxMEBtOtAhEm1hxXSxWZgr",
+    "csid": "CAA1bK6vGGR02BJCb8CfkaeI7F1kIUyvLSXZFXzlFIrsWIp0kw7GgCUZbqN_zE9z4_eV-g5Vl8GyC--TYwUZ1JigVwNPTWEncqk0qdUmmv1SpOcbOu-Z0Z5-GWnTK2oxSp8nKPBn0UGBvf98hQ3KD1uhjEFBrJbNdAgbHc8BGTaYvE0dHNtIE1Zz7bulDDg798Rjj1eGH5bC1vEZDQ_uI7l-wBRtXsCCdXAo6GZEyzr-dcpYInPL-Sy8ZY10RU67E-x_-v_sEUqyN69EHyENk97XzL0arGvXbnGNVH4OhdjynQ1csIlcmvbNQ5kAe9KjJTIT9NeVnmSAjao3AAbIfvRj",
     "privk": "4Iurk4vQ0BlLEEvEyaRUX8QnYzJFIedm0RVKe2pLh4wTzBBtgmafnszD_dP3Y40P-DSNLEGfWghL-0_BIW4XP8tfGNFkMg7mnYgQYC91ccz58BbhGEDf7-j97dstckf3OSSsT9D9H-cocXzyt1m231w9d7YLX23c3KAGz3vxdnl66F4jsFGO9AdIyb1KTEEt7NHkljtbz3WgWlk6W6wBawuEbJvLPHPx2L16i0iacbbkQi8ZF4pmddswMa9yWOSXwUribGDbdgx_jDGjBoKJUJI-7Aa-aOaRPEoVUTft2R2lNAVErvYwD_GIsIhQiCcJWul-KqPhI3vquvzUHd2rHHvKyTLyvXKyIDeVdBGXTaqFA2ni9xsjUNMOX14ftBZ4_fgDce0jvrZzYRs5IuOMt3K9gKMpBpUWtnlaBYbnYdL2zJuFlrM77PlcYab2uLLqlSe4hh-FxMAc_p_8tDAoU4dPgpgOpU3GRR8i7oszu_MKibzNpRBeAX1UtwKwQepjPnipu9aQlPy9OtgB-5KmGi34EcMKBPg8BN6vHRYg0Za_lk_TtTQ4WbkllAqR3Fla5-RBjzB7f3dWae4ES3VX4f-dI-UYrrKDQkqaS0R_xLaMPNG6_GQMDM7L5Fsa8I3hFjdgfs9rV4Xf_uIFrhUjm25EuT5JCdobNmwBi9VU5nCbk0LQJdrXDNYV3fmD-Y_p_KV8x_-opRnXUV03SCopOD6DhitsFtpv065QXcG1SNDu0mM-kgDh9E-QddtQQtXLLPuKFyX5o1ts08EqXTxHsZo5tIsevbExZoz9hxSRrr-V5swEDcJXoV78_k6sR3iniZ_m77JVo9QU572av2MvNhyu5YeTXyc0m6Me7cPGiO0",
-    "k": "GmSWkhwjjn38w8OHkD_S-A"
+    "k": "x1EvGzxu16FpfYajxFSFWQ"
   },
   "master_key": [
     384287193,
@@ -14,8 +14,8 @@
     554881366,
     530403344
   ],
-  "expected_uh": "mBdCzS2yFgo",
-  "sid": "yfMNTyTPzUKOuWYWRO-qhXpBOEN6Q2Y5dFp3JAKn0WNBqLBEzgbaMaILNg",
+  "expected_uh": "4h8kPReRUug",
+  "sid": "tRUhX2shZiPr8hl2KRGXJ3pBOEN6Q2Y5dFp3lh5A8mZnlSFgTcLOChMkLg",
   "rsa_private_key_b64": "BACOQ7VCjwkiwYCKhqRRvPTMBaQ5Yx2_sszj6ILrxrTBOJ2bu-9LsOSvaGz0HpnM2lXpJg3h6QWJdlQBOhwvfeafHg7rcEaaDuUWONifv5ABpQgeoAij6cgARMvFiOdjarMvu954Eduup8PHcgfjsBSu76qpu3UqkZCpBpByAYU1oQQA1i5oxuA9i7qsXxhJRsBeceI7hZSnNYAQzsWfFD0kDW8GsJBuK-CST6oNNp0z7MQ5Qof6DZ8x9wt5ZJR43HFmD2VtTQUZLvIeemC4URuR74UWn25CETyzQdIhdNSEibaCRvi0sNwb-ikCZVxxo4-O7ZBQPw0egrQOJW06HlCQUykH_00EIoiBRcbJLS6W3nJ8KhddDf_4glZYPz6fBpqu1jIdIBGOGQf4Ttn_DmdAgkLxWF7AF6k59D45J9kxfANRJIBGSWUsI1bQBlrwFtois4O14uQkQ40Jh_d5BCrLPe599zrliGH1SsECx_xYGWcWY_GPsPa99d_St56BB9oUtDW3A1clEx2uVS8OWqRPgVimu6MXs_TEEnjWGRFofHpl_8qGeAoPbNkXsTMQb6uUK4NCYq3UzVfreByEnOqxuQcu2jlF4Ey0UH9w_KjkRyT8xu--kyZAbktYaw4EZmGUxZIlkZLk_OAGaW8KWPZhdGxjfi8K7WeZK2HtLe4At48DC_ED_20pNtkTCrB6-FQlMj6a4O2C1sE6pSdrIPofcK-HpaefOXqYKWpRM-Wnp_qHnuJgEtgodQ-pw74nXkOsVFZoJzVGCepZKoa2xhevAu3CfXMfR97LIski17PPwWV9n7yQ7onSKDmJP-q4mO7PG7LICE22WkgJkk_T1W4UkDTkCxZE_t64F6JOryg",
   "decomposed_rsa_private_key": [
     99901518447147034909201847419097315968297147437151469508360346463543063455874100243913856315732601845631262435262260706834732781343251117295631282035669718956849603873760427510697419513879951677293141811802298231979984193675329310799949319780256427743430868153430092107435691279045586737323088097814348379553,
@@ -89,6 +89,26 @@
         "k": "zA8CzCf9tZw:Iz6fsJ_qIgmS4uC4eirPnfaZOcLOoQA2t_5wTtfqp7Y",
         "s": 137080,
         "ts": 1361697194
+      },
+      {
+        "h": "Cg50GQLT",
+        "p": "ywJVFBKB",
+        "u": "zA8CzCf9tZw",
+        "t": 0,
+        "a": "lv-LcMAl0dvpdxQFWNVZ7m9-mFT79mS0Mi_fH9InTqtBgcpe8kRVDGQ5Hj4BrXrc",
+        "k": "zA8CzCf9tZw:dmnxCL7Z2x3zFcrGcD9FdbUiMJ9EvCCPdGY39whRv2g",
+        "s": 39,
+        "ts": 1361925890
+      },
+      {
+        "h": "S0pkHArB",
+        "p": "ywJVFBKB",
+        "u": "zA8CzCf9tZw",
+        "t": 0,
+        "a": "OFTM18eQGxUTcJP2BQWXBo23vnjqs4b9QzmNZtDqekz4GZESVNiYlqKtasZqdVHN",
+        "k": "zA8CzCf9tZw:cnpz0cav9fLAJHK1TbL3MD5n9R7VvedDwbFRVp4qQh4",
+        "s": 137080,
+        "ts": 1361925899
       }
     ],
     "ok": [
@@ -104,6 +124,70 @@
         "m": "megartest@gmail.com"
       }
     ],
-    "sn": "pQ-WDyYPBHU"
+    "sn": "2q4ZpNDFGNA"
+  },
+  "sample_files": {
+    "megar_test_sample_1.txt": {
+      "file_download_url_response": {
+        "s": 39,
+        "at": "lv-LcMAl0dvpdxQFWNVZ7m9-mFT79mS0Mi_fH9InTqtBgcpe8kRVDGQ5Hj4BrXrc",
+        "g": "http://gfs262n164.userstorage.mega.co.nz/dl/mri5tfEwyd0zbAImLAPBzTeWY8_A6olaAjn4rztgo3cQZ_ovfobz7A5X4vhHxU6xDWX3Gcxkozxb0acSEOyC-wRl7gO3jZrJzqLT13812fUfghQvwQ"
+      },
+      "key": [
+        2080156050,
+        393781808,
+        -1482092335,
+        -760625383,
+        758940180,
+        1555777008,
+        -1644788558,
+        -1184834090
+      ],
+      "decomposed_key": [
+        1455434630,
+        1271130048,
+        979342435,
+        1808341711
+      ],
+      "size": 39,
+      "iv": [
+        758940180,
+        1555777008,
+        0,
+        0
+      ],
+      "initial_counter_value": 60129435948344049243162590180076945408
+    },
+    "megar_test_sample_2.png": {
+      "file_download_url_response": {
+        "s": 137080,
+        "at": "OFTM18eQGxUTcJP2BQWXBo23vnjqs4b9QzmNZtDqekz4GZESVNiYlqKtasZqdVHN",
+        "g": "http://gfs262n170.userstorage.mega.co.nz/dl/dpAQXYa5Q7qOQQKAWgqcNsmyPfr8As0DEJlX2LCKmTAvRVlvWpW6F3Hw-xV2Ou2ynF_bfjIcGG5ZO0vi3hf-6rFOx3jAu-FNNSKnvEA1irjUy4hT7g"
+      },
+      "key": [
+        1029178532,
+        1095006796,
+        361733076,
+        -1656803926,
+        1405858242,
+        1396716347,
+        870048465,
+        -473559286
+      ],
+      "decomposed_key": [
+        1855173990,
+        302270839,
+        643070213,
+        2130256544
+      ],
+      "size": 137080,
+      "iv": [
+        1405858242,
+        1396716347,
+        0,
+        0
+      ],
+      "initial_counter_value": 111383565294958830569229712241211736064
+    }
   }
 }

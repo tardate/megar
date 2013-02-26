@@ -10,6 +10,14 @@ describe "Megar Exceptions" do
     end
   end
 
+  describe "Megar::CryptoSupportRequirementsError" do
+    let(:exception_class) { Megar::CryptoSupportRequirementsError }
+    subject { raise exception_class.new("test") }
+    it "should raise correctly" do
+      expect { subject }.to raise_error(exception_class)
+    end
+  end
+
   describe "Megar::MegaRequestError" do
     let(:exception_class) { Megar::MegaRequestError }
     {

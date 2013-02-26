@@ -3,6 +3,9 @@ module Megar
   # A general Megar exception
   class Error < StandardError; end
 
+  # Raised when crypto requirements are not met by the ruby platform we're running on
+  class CryptoSupportRequirementsError < Error; end
+
   class MegaRequestError < Error
 
     # Initialise with +error_code+ returned from Mega

@@ -2,14 +2,16 @@
 
 Megar ("megaargh!" in pirate-speak) is a Ruby wrapper and command-line (CLI) client for the {Mega API}[https://mega.co.nz/#developers].
 
-It needs a few more API functions implemented to make it halfway useful, but it's a start.
-You can connect and get file/folder listings at the moment.
+So far this is "experimental". Megar has coverage of the basic file/folder operations: connect, get file/folder listings and details, and
+download files. There's more in the API that would be worth supporting .. a job for tomorrow!
+
 
 == Requirements and Known Limitations
 
 Consider this totally alpha at this point, especially since the Mega API has yet to be formally and fully documented.
 
 * Currently tested with MRI 1.9.3
+* Requires OpenSSL 1.0.1+ (and properly linked with ruby)
 * MRI 1.9.2 and 2.x not yet tested
 * Rubinius and JRuby 1.9 modes not yet tested
 * No plans to support 1.8 Ruby branches
@@ -20,6 +22,7 @@ Supported API functions:
 * User/session management: Complete accounts
 * Login session challenge/response
 * Retrieve file and folder nodes
+* Request download URL (and download file contents)
 
 Currently unsupported API functions:
 * User/session management: Ephemeral accounts
@@ -32,7 +35,6 @@ Currently unsupported API functions:
 * Create/delete public handle
 * Create/modify/delete outgoing share
 * Key handling - Set or request share/node keys
-* Request download URL
 * Request upload URL
 * Add/update user
 * Get user
@@ -107,7 +109,6 @@ and <tt>find_by_id</tt> method will find the first id match:
      => "jtwkAQaK"
     session.folders.find_by_id("jtwkAQaK").id
      => "74ZTXbyR"
-
 
 
 === How to get a handle to the special Mega folders
@@ -188,6 +189,14 @@ primary attributes it exposes:
 * name: the name of the file
 * size: the size of the file content (in bytes)
 * parent_folder: handle to the parent folder
+* body: get (download) the body content of the file
+
+=== How to download a file
+
+Once you have a file object (e.g. <tt>session.files.first</tt>):
+
+  file = session.files.first
+  file.body # returns the full decrypted body content
 
 
 === CLI: How to use the command-line client
@@ -211,6 +220,21 @@ Use the <tt>ls</tt> command:
     Connecting to mega as my@email.com..
                   39 bytes  74ZTXbyR    hello_mega.txt
               137080 bytes  L0xHwayA    mega.png
+
+
+=== CLI: How to download a file
+
+Use the <tt>get</tt> command:
+
+    $ megar --email=my@email.com --password=mypassword get L0xHwayA
+    Connecting to mega as my@email.com..
+    Downloading L0xHwayA to mega.png...
+
+Note: this is very simple interface at the moment:
+* you can only identify the file by the ID (not name)
+* it downloads and saves using the same name as on the server
+* and it doesn't check if you are overwriting a local file
+* no file integrity testing yet
 
 
 === How to run tests
@@ -239,6 +263,42 @@ A rake task is available to re-generate the expectations:
 NOTE: the email and password are stored in the expectations file, so be careful not to
 commit and distribute credentials. Change the password on the account first.
 The tests will still run as intended with the snapshot of crypto details stored in the expectations file.
+
+
+=== Getting my OpenSSL installation up to snuff (MacOSX)
+
+These notes are specific to MacOSX. Mileage on other operating systems may vary, but this should give you
+a guide:
+
+Check the openssl version installed
+
+  $ irb -r openssl
+  1.9.3p327 :001 > OpenSSL::VERSION
+   => "1.1.0"
+  1.9.3p327 :002 > OpenSSL::OPENSSL_VERSION
+   => "OpenSSL 0.9.8r 8 Feb 2011"
+
+OK, that's too old. The OS-installed version is probably not going to change any time soon, and we don't
+want to replace it (too many unintended consequences) but we need a later version to use with ruby.
+
+You can install form source, use brew or macports, or use rvm.
+
+==== Installing OpenSSL Using RVM:
+
+See the {rvm openssl}[https://rvm.io//packages/openssl/] page for details..
+
+  $  rvm pkg install openssl
+  Fetching openssl-1.0.1c.tar.gz to ...
+
+  $ rvm reinstall 1.9.3 --with-openssl-dir=$rvm_path/usr
+
+  $ irb -r openssl
+  irb(main):001:0> OpenSSL::VERSION
+  => "1.1.0"
+  irb(main):002:0> OpenSSL::OPENSSL_VERSION
+  => "OpenSSL 1.0.1c 10 May 2012"
+
+Sweet.
 
 
 == References

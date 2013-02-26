@@ -27,9 +27,9 @@ class Megar::Shell
       raise "Failed to connect!" unless session.connected?
       case args.first
       when /ls/i
-        session.files.each do |file|
-          puts file
-        end
+        ls
+      when /get/i
+        get(args[1])
       else
         $stderr.puts "Connected!"
       end
@@ -62,6 +62,7 @@ Options:
 Commands:
   (none)                 : will perform a basic connection test only
   ls                     : returns a full file listing
+  get file_id            : downloads the file with id file_id
 
 Examples:
   megar --email=my@mail.com --password=MyPassword ls
@@ -74,6 +75,23 @@ EOS
   # prints usage/help information
   def usage
     self.class.usage
+  end
+
+  def ls
+    session.files.each do |file|
+      puts file
+    end
+  end
+
+  def get(file_id)
+    if file = session.files.find_by_id(file_id)
+      $stderr.puts "Downloading #{file_id} to #{file.name}.."
+      File.open(file.name,'wb') do |f|
+        f.write file.body
+      end
+    else
+      $stderr.puts "I couldn't find the file with ID #{file_id}"
+    end
   end
 
   def session

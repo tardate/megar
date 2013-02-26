@@ -14,6 +14,14 @@ describe Megar::Session do
   let(:expected_rsa_private_key_b64) { test_data['rsa_private_key_b64'] }
   let(:expected_decomposed_rsa_private_key) { test_data['decomposed_rsa_private_key'] }
 
+  context "when OpenSSL requirements are not met" do
+    before do
+      OpenSSL::Cipher.stub(:ciphers).and_return([])
+    end
+    it "should raise an error when instantiated" do
+      expect { Megar::Session.new }.to raise_error(Megar::CryptoSupportRequirementsError)
+    end
+  end
 
   context "with username and password" do
     let(:session) { Megar::Session.new(options) }
