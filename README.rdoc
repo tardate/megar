@@ -63,6 +63,9 @@ Or install it yourself as:
 
     $ gem install megar
 
+If you want to do a little hacking around, you can also use {megar_rt}[https://github.com/tardate/megar_rt]
+to bootstrap an isolated environment and be up and running super fast.
+
 
 === How to start an authenticated session
 
