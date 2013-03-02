@@ -1,5 +1,10 @@
-0.0.1 Preliminary Release  26-Feb-2013
-======================================
+0.0.2 little more hearty release                 2-Mar-2013
+===========================================================
+* basic file download support added
+* refactor and extend the folder/file navigation API
+
+0.0.1 Preliminary Release                       26-Feb-2013
+===========================================================
 * An initial release with minimal functionality
 * API support: connect and get file/folder listings
 * basic CLI to connect and get file listing
