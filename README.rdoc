@@ -234,7 +234,6 @@ Note: this is very simple interface at the moment:
 * you can only identify the file by the ID (not name)
 * it downloads and saves using the same name as on the server
 * and it doesn't check if you are overwriting a local file
-* no file integrity testing yet
 
 
 === How to run tests
