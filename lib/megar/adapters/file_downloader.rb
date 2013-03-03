@@ -31,7 +31,7 @@ class Megar::FileDownloader
     decoded_content = ''
     calculated_mac = [0, 0, 0, 0]
 
-    decryptor = session.get_file_decrypter(decomposed_key,iv)
+    decryptor = get_file_decrypter(decomposed_key,iv)
 
     get_chunks(download_size).each do |chunk_start, chunk_size|
       chunk = stream.readpartial(chunk_size)
@@ -107,35 +107,6 @@ class Megar::FileDownloader
   # Returns true if live session/file properly set
   def live_session?
     !!(session && file)
-  end
-
-  # Returns an array of chunk sizes given total file +size+
-  #
-  # Chunk boundaries are located at the following positions:
-  # 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
-  def get_chunks(size)
-    chunks = []
-    p = pp = 0
-    i = 1
-
-    while i <= 8 and p < size - i * 0x20000 do
-      chunk_size =  i * 0x20000
-      chunks << [p, chunk_size]
-      pp = p
-      p += chunk_size
-      i += 1
-    end
-
-    while p < size - 0x100000 do
-      chunk_size =  0x100000
-      chunks << [p, chunk_size]
-      pp = p
-      p += chunk_size
-    end
-
-    chunks << [p, size - p] if p < size
-
-    chunks
   end
 
   def accumulate_mac(progressive_mac,chunk)

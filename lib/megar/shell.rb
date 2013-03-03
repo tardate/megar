@@ -30,6 +30,8 @@ class Megar::Shell
         ls
       when /get/i
         get(args[1])
+      when /put/i
+        put(args.drop(1))
       else
         $stderr.puts "Connected!"
       end
@@ -63,10 +65,13 @@ Commands:
   (none)                 : will perform a basic connection test only
   ls                     : returns a full file listing
   get file_id            : downloads the file with id file_id
+  put file_name          : uploads the file called "file_name"
 
 Examples:
   megar --email=my@mail.com --password=MyPassword ls
   megar -e my@mail.com -p MyPassword ls
+  megar -e my@mail.com -p MyPassword get 74ZTXbyR
+  megar -e my@mail.com -p MyPassword put ../path/to/my_file.png
 
 EOS
     end
@@ -77,12 +82,14 @@ EOS
     self.class.usage
   end
 
+  # do file listing
   def ls
     session.files.each do |file|
       puts file
     end
   end
 
+  # download file with +file_id+
   def get(file_id)
     if file = session.files.find_by_id(file_id)
       $stderr.puts "Downloading #{file_id} to #{file.name}.."
@@ -91,6 +98,14 @@ EOS
       end
     else
       $stderr.puts "I couldn't find the file with ID #{file_id}"
+    end
+  end
+
+  # upload file(s) +filenames+
+  def put(filenames)
+    Array(filenames).each do |filename|
+      $stderr.puts "Uploading #{filename}.."
+      session.files.create(body: filename)
     end
   end
 

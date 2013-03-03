@@ -23,6 +23,8 @@ Supported API functions:
 * Request download URL
 * Download files
 * Download file message authentication codes ({MAC}[http://en.wikipedia.org/wiki/Message_authentication_code])
+* Request upload URL
+* Upload files
 
 Currently unsupported API functions:
 * User/session management: Ephemeral accounts
@@ -35,7 +37,6 @@ Currently unsupported API functions:
 * Create/delete public handle
 * Create/modify/delete outgoing share
 * Key handling - Set or request share/node keys
-* Request upload URL
 * Add/update user
 * Get user
 * Retrieve user's public key
@@ -198,6 +199,28 @@ Once you have a file object (e.g. <tt>session.files.first</tt>):
   file = session.files.first
   file.body # returns the full decrypted body content
 
+=== How to upload a file
+
+Uploading a new file is performed using the <tt>create</tt> method of a folder of the files collection. For example:
+
+  # get a handle to the file you want to upload e.g.
+  file_handle = Pathname.new('../path/to/my_file.png')
+
+  # create the file in the root (Cloud Drive) folder:
+  session.root.create( body: file_handle )
+
+  # or this also implicitly creates the file in the root folder:
+  session.files.create( body: file_handle )
+
+  # or to create the file in a specific folder (e.g. 'My Images'):
+  session.folders.find_by_name('My Images').create( body: file_handle )
+
+The <tt>file_handle</tt> can actually be any suitable file name, Pathname or File object.
+
+If you want to change the name of the file as stored in Mega, you can also provide a <tt>name</tt> parameter:
+
+  session.files.create( name: 'with a new name.png', body: file_handle )
+
 
 === CLI: How to use the command-line client
 
@@ -210,6 +233,9 @@ All operations require credentials to ba passed on the command line (email and p
     $ megar --email=my@email.com --password=mypassword
     Connecting to mega as my@email.com..
     Connected!
+
+Note: If you just want to do a little hacking around, {megar_rt}[https://github.com/tardate/megar_rt]
+is an easy way to bootstrap an isolated environment and be up and running super fast.
 
 
 === CLI: How to get a file listing
@@ -228,12 +254,31 @@ Use the <tt>get</tt> command:
 
     $ megar --email=my@email.com --password=mypassword get L0xHwayA
     Connecting to mega as my@email.com..
-    Downloading L0xHwayA to mega.png...
+    Downloading L0xHwayA to mega.png..
 
 Note: this is very simple interface at the moment:
 * you can only identify the file by the ID (not name)
 * it downloads and saves using the same name as on the server
 * and it doesn't check if you are overwriting a local file
+
+
+=== CLI: How to upload a file
+
+Use the <tt>put</tt> command:
+
+    $ megar --email=my@email.com --password=mypassword put ../path/to/my_file.png
+    Connecting to mega as my@email.com..
+    Uploading my_file.png..
+
+This uploads a file into the root folder by default, and keeps the same file name.
+
+Standard command-line expansions work, so to upload multiple files, you can do this:
+
+    $ megar --email=my@email.com --password=mypassword put *.png
+    Connecting to mega as my@email.com..
+    Uploading my_file_1.png..
+    Uploading my_file_2.png..
+    (etc for all files matching *.png)
 
 
 === How to run tests

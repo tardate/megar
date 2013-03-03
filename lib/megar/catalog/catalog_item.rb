@@ -42,10 +42,17 @@ module Megar::CatalogItem
   #   4: Special node: Trash Bin
   attr_accessor :type
 
+  # Returns the default parent folder (default is nil)
+  def default_parent_folder
+  end
+
   # Returns a handle to the enclosing folder (if any)
   def parent_folder
-    if session && parent_folder_id
+    return unless session
+    if parent_folder_id
       session.folders.find_by_id(parent_folder_id)
+    else
+      default_parent_folder
     end
   end
 

@@ -1,12 +1,12 @@
 {
   "email": "megartest@gmail.com",
   "email_mixed_case": "Megartest@gmail.com",
-  "password": "90m43ivORuvny1zv5jFW2vXc",
+  "password": "NEvfEM5xME7jAnr6YN9JZH8M",
   "autoconnect": false,
   "login_response_data": {
-    "csid": "CAAZOXRxQLOD8svErcRUYjCRJMv0WazenX_Fz5QEJJf8YRD_IypG4TSWw36zC4IdFkwDiunegaEuNs6W41BV5l0wx_PiQ_7n34SqqGsE54Rq5ilYRFTvYA7kFn_M8cVYSzlqP_xV3h3FkeI9z5gKWujHmhy_swt3-w5kerNy4VXcd2ZmDqQPdXGnQ0fNToKgdPNkjfrevTbTgruiBxZRKEvi_mQIL62Y74nv0KZpI7LGv6-K1xfMJ9NdpxkRnIbjW0EFaAF-qmAY7MFWBiL_f54xoxh9ailpbh61i9SXA54c4E5Oi0iTKRCWuVeDHqVFK9n4DrIHmouzyyWj-XHh9hI7",
+    "csid": "CABObd6kRiw5JF_4Fr7z2R_tleh8g3jlsiGl3fX48C3MFq57ni86x3cVOgtNgv48N5ZX_68g-MROc_5j6TP3g2FTBpOhMRf2E4swTAwBQxa0CF04dj6hfHKHIp5XyE1KPGN57GvecLzTV6FgtanY1v41Pm_1H6PE89XSejovQIGOOKwsmeUOlmfLYreMe58Il1aROqzr6E-eybD8BzozQgy8XMO80Gcc6eoja0VbbxehHPdCYS990tAWBYkG8up-rnQqwpln-UrmtZbXtv4WoNO5n3wI4s5abyQl7PbG_42xw9Uk2QYwvIrRSnt4rDB8m-iAihGS7Zp6QQO5RVpuWvU1",
     "privk": "4Iurk4vQ0BlLEEvEyaRUX8QnYzJFIedm0RVKe2pLh4wTzBBtgmafnszD_dP3Y40P-DSNLEGfWghL-0_BIW4XP8tfGNFkMg7mnYgQYC91ccz58BbhGEDf7-j97dstckf3OSSsT9D9H-cocXzyt1m231w9d7YLX23c3KAGz3vxdnl66F4jsFGO9AdIyb1KTEEt7NHkljtbz3WgWlk6W6wBawuEbJvLPHPx2L16i0iacbbkQi8ZF4pmddswMa9yWOSXwUribGDbdgx_jDGjBoKJUJI-7Aa-aOaRPEoVUTft2R2lNAVErvYwD_GIsIhQiCcJWul-KqPhI3vquvzUHd2rHHvKyTLyvXKyIDeVdBGXTaqFA2ni9xsjUNMOX14ftBZ4_fgDce0jvrZzYRs5IuOMt3K9gKMpBpUWtnlaBYbnYdL2zJuFlrM77PlcYab2uLLqlSe4hh-FxMAc_p_8tDAoU4dPgpgOpU3GRR8i7oszu_MKibzNpRBeAX1UtwKwQepjPnipu9aQlPy9OtgB-5KmGi34EcMKBPg8BN6vHRYg0Za_lk_TtTQ4WbkllAqR3Fla5-RBjzB7f3dWae4ES3VX4f-dI-UYrrKDQkqaS0R_xLaMPNG6_GQMDM7L5Fsa8I3hFjdgfs9rV4Xf_uIFrhUjm25EuT5JCdobNmwBi9VU5nCbk0LQJdrXDNYV3fmD-Y_p_KV8x_-opRnXUV03SCopOD6DhitsFtpv065QXcG1SNDu0mM-kgDh9E-QddtQQtXLLPuKFyX5o1ts08EqXTxHsZo5tIsevbExZoz9hxSRrr-V5swEDcJXoV78_k6sR3iniZ_m77JVo9QU572av2MvNhyu5YeTXyc0m6Me7cPGiO0",
-    "k": "Jae_bwSspfVC86XhPeE1kA"
+    "k": "0sdW36PBOcqicUJ7814isw"
   },
   "master_key": [
     384287193,
@@ -14,8 +14,8 @@
     554881366,
     530403344
   ],
-  "expected_uh": "lVFi2q0imNs",
-  "sid": "hGXyZ-b9hzvnz7BRV-_KpXpBOEN6Q2Y5dFp3MjpMVF7c7Ew0nm-oA7c6Yw",
+  "expected_uh": "FeGJgLm4ciM",
+  "sid": "gVes6vS8WZ2c-CB7HJRdXHpBOEN6Q2Y5dFp3CQbFwprvxr0nkhb_XTqQrA",
   "rsa_private_key_b64": "BACOQ7VCjwkiwYCKhqRRvPTMBaQ5Yx2_sszj6ILrxrTBOJ2bu-9LsOSvaGz0HpnM2lXpJg3h6QWJdlQBOhwvfeafHg7rcEaaDuUWONifv5ABpQgeoAij6cgARMvFiOdjarMvu954Eduup8PHcgfjsBSu76qpu3UqkZCpBpByAYU1oQQA1i5oxuA9i7qsXxhJRsBeceI7hZSnNYAQzsWfFD0kDW8GsJBuK-CST6oNNp0z7MQ5Qof6DZ8x9wt5ZJR43HFmD2VtTQUZLvIeemC4URuR74UWn25CETyzQdIhdNSEibaCRvi0sNwb-ikCZVxxo4-O7ZBQPw0egrQOJW06HlCQUykH_00EIoiBRcbJLS6W3nJ8KhddDf_4glZYPz6fBpqu1jIdIBGOGQf4Ttn_DmdAgkLxWF7AF6k59D45J9kxfANRJIBGSWUsI1bQBlrwFtois4O14uQkQ40Jh_d5BCrLPe599zrliGH1SsECx_xYGWcWY_GPsPa99d_St56BB9oUtDW3A1clEx2uVS8OWqRPgVimu6MXs_TEEnjWGRFofHpl_8qGeAoPbNkXsTMQb6uUK4NCYq3UzVfreByEnOqxuQcu2jlF4Ey0UH9w_KjkRyT8xu--kyZAbktYaw4EZmGUxZIlkZLk_OAGaW8KWPZhdGxjfi8K7WeZK2HtLe4At48DC_ED_20pNtkTCrB6-FQlMj6a4O2C1sE6pSdrIPofcK-HpaefOXqYKWpRM-Wnp_qHnuJgEtgodQ-pw74nXkOsVFZoJzVGCepZKoa2xhevAu3CfXMfR97LIski17PPwWV9n7yQ7onSKDmJP-q4mO7PG7LICE22WkgJkk_T1W4UkDTkCxZE_t64F6JOryg",
   "decomposed_rsa_private_key": [
     99901518447147034909201847419097315968297147437151469508360346463543063455874100243913856315732601845631262435262260706834732781343251117295631282035669718956849603873760427510697419513879951677293141811802298231979984193675329310799949319780256427743430868153430092107435691279045586737323088097814348379553,
@@ -134,14 +134,17 @@
         "m": "megartest@gmail.com"
       }
     ],
-    "sn": "7eU3c-OGQqw"
+    "sn": "rkC92G0-SNg"
+  },
+  "file_upload_url_response": {
+    "p": "http://gfs262n185.userstorage.mega.co.nz/ul/YKxC-sS4xNF8MgL4iddMm9PNukmzMODqpxWsV5CquftEe5YDUZaq2_QSuqt8ubYtt0_VYE-yLk2gN5uJIyDHhQ"
   },
   "sample_files": {
     "megar_test_sample_1.txt": {
       "file_download_url_response": {
         "s": 39,
         "at": "lv-LcMAl0dvpdxQFWNVZ7m9-mFT79mS0Mi_fH9InTqtBgcpe8kRVDGQ5Hj4BrXrc",
-        "g": "http://gfs262n164.userstorage.mega.co.nz/dl/XDCeIoBjACpp6AK9LPeFtbVwiaGxPQkXlNBES3C41dAbqwwYjiiUCz2Y9ocz9O0YK2Qbz1WSetjzS-deIlkyOC4781wX6D0LGJY2EqfpSbm27jaZGw"
+        "g": "http://gfs262n164.userstorage.mega.co.nz/dl/Hv0Huu5AKOP1CQKwZNxpr7JMVXST1oxYEWT08YF3WIAWIDX4-3-bKAGVDU13ESYqBmcMDQGDsohpihtrDwEIpz3W5yvdTIFAhhWR49qpZvi3yfkhGg"
       },
       "key": [
         2080156050,
@@ -176,7 +179,7 @@
       "file_download_url_response": {
         "s": 137080,
         "at": "OFTM18eQGxUTcJP2BQWXBo23vnjqs4b9QzmNZtDqekz4GZESVNiYlqKtasZqdVHN",
-        "g": "http://gfs262n170.userstorage.mega.co.nz/dl/HLfASy4no6q7GQIx5LJjvUzjr9OlR2J1vg9ZN56eLmjzeoZLs4fmpVuIZpflTahTa-Ia1Sew7r63WC0lfpSAFIidOzxCOG7sYrWtkObppxfkwBWbKQ"
+        "g": "http://gfs262n170.userstorage.mega.co.nz/dl/ZWHZvT4lAtuWdwKYNzKGjqDfAvohHAi7AnKmQCCCWormdDhn-CLkuVb5Onah2GxtzcJ_vQFoI_EWAxIxGyBIXrsRLw60IJ6ZNjNWiDpcPG_6jTgP4A"
       },
       "key": [
         1029178532,

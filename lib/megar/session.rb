@@ -98,6 +98,34 @@ class Megar::Session
     api_request({'a' => 'g', 'g' => 1, 'n' => node_id})
   end
 
+  # Command: requests file upload url from the API for the file of +size+
+  def get_file_upload_url_response(size)
+    ensure_connected!
+    api_request({'a' => 'u', 's' => size})
+  end
+
+  # Command: sends updated attributes following file upload to the API
+  def send_file_upload_attributes(folder_id,name,upload_key,meta_mac,completion_file_handle)
+    attribs = {'n' => name}
+    encrypt_attribs = base64urlencode(encrypt_file_attributes(attribs, upload_key[0,4]))
+
+    key = [upload_key[0] ^ upload_key[4], upload_key[1] ^ upload_key[5],
+           upload_key[2] ^ meta_mac[0], upload_key[3] ^ meta_mac[1],
+           upload_key[4], upload_key[5], meta_mac[0], meta_mac[1]]
+
+    encrypted_key = a32_to_base64(encrypt_key(key, master_key))
+    api_request({
+      'a' => 'p',
+      't' => folder_id,
+      'n' => [{
+        'h' => completion_file_handle,
+        't' => 0,
+        'a' => encrypt_attribs,
+        'k' => encrypted_key
+      }]
+    })
+  end
+
   protected
 
   # Command: enforces guard condition requiring authenticated connection to proceed

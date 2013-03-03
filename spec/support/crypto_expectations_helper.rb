@@ -70,6 +70,7 @@ module CryptoExpectationsHelper
       e[:rsa_private_key_b64] = session.rsa_private_key_b64
       e[:decomposed_rsa_private_key] = session.decomposed_rsa_private_key
       e[:files_response_data] = session.send(:get_files_response)
+      e[:file_upload_url_response] = session.get_file_upload_url_response(39)
       session.send(:handle_files_response,e[:files_response_data])
       megar_test_sample_1 = session.files.find_by_name('megar_test_sample_1.txt')
       megar_test_sample_2 = session.files.find_by_name('megar_test_sample_2.png')

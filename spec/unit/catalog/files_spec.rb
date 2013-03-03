@@ -23,4 +23,16 @@ describe Megar::Files do
     end
   end
 
+  describe "#create" do
+    let(:attributes) { { name: 'a name', body: 'file_handle'} }
+    subject { instance.create(attributes) }
+    it "should create a valid uploader and post!" do
+      instance.stub(:parent_folder).and_return('parent_folder')
+      uploader = mock()
+      uploader.should_receive(:post!)
+      Megar::FileUploader.should_receive(:new).with(attributes.merge(folder: 'parent_folder')).and_return(uploader)
+      subject
+    end
+  end
+
 end

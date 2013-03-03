@@ -52,6 +52,16 @@ module Megar::CryptoSupport
     b
   end
 
+  # Javascript reference implementation: function encrypt_key(cipher,a)
+  #
+  def encrypt_key(a, key)
+    b=[]
+    (0..(a.length-1)).step(4) do |i|
+      b.concat aes_cbc_encrypt_a32(a[i,4], key)
+    end
+    b
+  end
+
   # Returns decrypted array of 32-bit integers representation of base64 +data+ decrypted using +key+
   def decrypt_base64_to_a32(data,key)
     decrypt_key(base64_to_a32(data), key)
@@ -417,6 +427,18 @@ module Megar::CryptoSupport
     JSON.parse( rstr.gsub("\x0",'').gsub(/^.*{/,'{'))
   end
 
+  # Returns encrypted file attributes given encrypted +attributes+ and decomposed file +key+
+  #
+  # Javascript reference implementation: function enc_attr(attr,key)
+  #
+  def encrypt_file_attributes(attributes, key)
+    rstr = 'MEGA' + attributes.to_json
+    if (mod = rstr.length % 16) > 0
+      rstr << "\x0" * (16 - mod)
+    end
+    aes_cbc_encrypt(rstr, a32_to_str(key))
+  end
+
   # Returns a decomposed file +key+
   #
   # Javascript reference implementation: function startdownload2(res,ctx)
@@ -430,7 +452,37 @@ module Megar::CryptoSupport
     ]
   end
 
-  # Returns AES CTR-mode decryption cipher
+
+  # Returns an array of chunk sizes given total file +size+
+  #
+  # Chunk boundaries are located at the following positions:
+  # 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
+  def get_chunks(size)
+    chunks = []
+    p = pp = 0
+    i = 1
+
+    while i <= 8 and p < size - i * 0x20000 do
+      chunk_size =  i * 0x20000
+      chunks << [p, chunk_size]
+      pp = p
+      p += chunk_size
+      i += 1
+    end
+
+    while p < size - 0x100000 do
+      chunk_size =  0x100000
+      chunks << [p, chunk_size]
+      pp = p
+      p += chunk_size
+    end
+
+    chunks << [p, size - p] if p < size
+
+    chunks
+  end
+
+  # Returns AES CTR-mode decryption cipher given +key+ and +iv+ as array of int
   #
   def get_file_decrypter(key,iv)
     aes = OpenSSL::Cipher::Cipher.new('AES-128-CTR')
@@ -438,6 +490,17 @@ module Megar::CryptoSupport
     aes.padding = 0
     aes.key = a32_to_str(key)
     aes.iv = a32_to_str(iv)
+    aes
+  end
+
+  # Returns AES CTR-mode encryption cipher given +key+ and +iv+ as array of int
+  #
+  def get_file_encrypter(key,iv)
+    aes = OpenSSL::Cipher::Cipher.new('AES-128-CTR')
+    aes.encrypt
+    aes.padding = 0
+    aes.key = a32_to_str(key)
+    aes.iv = iv
     aes
   end
 

@@ -9,6 +9,8 @@ module Megar
   # Raised when MAC fails verification test
   class MacVerificationError < Error; end
 
+  class UnsupportedFileHandleTypeError < Error; end
+
   class MegaRequestError < Error
 
     # Initialise with +error_code+ returned from Mega

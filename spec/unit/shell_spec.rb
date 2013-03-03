@@ -43,4 +43,16 @@ describe Megar::Shell do
     end
   end
 
+  describe "#put" do
+    let(:options) { ['-e=email','-p=pwd'] }
+    let(:argv) { ['put', 'file_name'] }
+    it "should invoke put" do
+      mock_session = mock()
+      mock_session.stub(:connected?).and_return(true)
+      shell.stub(:session).and_return(mock_session)
+      shell.should_receive(:put).with(argv.drop(1))
+      shell.run
+    end
+  end
+
 end
