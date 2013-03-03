@@ -29,16 +29,18 @@ class Megar::FileDownloader
   def content
     return unless live_session?
     decoded_content = ''
+    calculated_mac = [0, 0, 0, 0]
 
-    # TODO here: init mac calculation (perhaps should be an option to use of not)
-    decryptor = session.get_file_decrypter(file.decomposed_key,iv)
+    decryptor = session.get_file_decrypter(decomposed_key,iv)
+
     get_chunks(download_size).each do |chunk_start, chunk_size|
       chunk = stream.readpartial(chunk_size)
       decoded_chunk = decryptor.update(chunk)
       decoded_content << decoded_chunk
-      # TODO here: calculate chunk mac
+      calculated_mac = accumulate_mac(calculated_mac,decoded_chunk)
     end
-    # TODO here: perform integrity check against expected file mac
+
+    raise Megar::MacVerificationError.new unless ([calculated_mac[0] ^ calculated_mac[1], calculated_mac[2] ^ calculated_mac[3]] == mac)
 
     decoded_content
   end
@@ -62,13 +64,28 @@ class Megar::FileDownloader
   # Returns the decrypted download attributes
   def download_attributes
     if attributes = download_url_response['at']
-      decrypt_file_attributes(attributes,file.decomposed_key)
+      decrypt_file_attributes(attributes,decomposed_key)
     end
   end
 
   # Returns the initialisation vector
   def iv
-    @iv ||= file.key[4,2] + [0, 0]
+    @iv ||= key[4,2] + [0, 0]
+  end
+
+  # Returns the expected MAC for the file
+  def mac
+    key[6,2]
+  end
+
+  # Returns the file key (shortcut)
+  def key
+    file.key
+  end
+
+  # Returns the file key (shortcut)
+  def decomposed_key
+    file.decomposed_key
   end
 
   # Returns the initial value for AES counter
@@ -121,12 +138,21 @@ class Megar::FileDownloader
     chunks
   end
 
-  def calculate_chunk_mac(iv,chunk)
-    chunk_mac = [iv[0], iv[1], iv[0], iv[1]]
-    (1..chunk.length).take(16).each do |bit|
-      # NYI
-    end
-    chunk_mac
+  def accumulate_mac(progressive_mac,chunk)
+    use_signed_math = true
+    chunk_mac = calculate_chunk_mac(chunk,use_signed_math)
+    combined_mac = [
+      progressive_mac[0] ^ chunk_mac[0],
+      progressive_mac[1] ^ chunk_mac[1],
+      progressive_mac[2] ^ chunk_mac[2],
+      progressive_mac[3] ^ chunk_mac[3]
+    ]
+    session.aes_cbc_encrypt_a32(combined_mac, decomposed_key, use_signed_math)
+  end
+
+  # Returns the calculated mac for +chunk+
+  def calculate_chunk_mac(chunk,signed=true)
+    session.calculate_chunk_mac(chunk,decomposed_key,iv,signed)
   end
 
 end

@@ -81,6 +81,7 @@ module CryptoExpectationsHelper
           decomposed_key: megar_test_sample_1.decomposed_key,
           size: downloader.download_size,
           iv: downloader.iv,
+          mac: downloader.mac,
           initial_counter_value: downloader.initial_counter_value
         }
         write_file_download_sample(megar_test_sample_1.name,downloader.raw_content)
@@ -92,6 +93,7 @@ module CryptoExpectationsHelper
           decomposed_key: megar_test_sample_2.decomposed_key,
           size: downloader.download_size,
           iv: downloader.iv,
+          mac: downloader.mac,
           initial_counter_value: downloader.initial_counter_value
         }
         write_file_download_sample(megar_test_sample_2.name,downloader.raw_content)

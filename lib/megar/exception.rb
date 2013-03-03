@@ -6,6 +6,9 @@ module Megar
   # Raised when crypto requirements are not met by the ruby platform we're running on
   class CryptoSupportRequirementsError < Error; end
 
+  # Raised when MAC fails verification test
+  class MacVerificationError < Error; end
+
   class MegaRequestError < Error
 
     # Initialise with +error_code+ returned from Mega

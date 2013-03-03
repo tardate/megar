@@ -12,9 +12,7 @@ Consider this totally alpha at this point, especially since the Mega API has yet
 
 * Currently tested with MRI 1.9.3
 * Requires OpenSSL 1.0.1+ (and properly linked with ruby)
-* MRI 1.9.2 and 2.x not yet tested
-* Rubinius and JRuby 1.9 modes not yet tested
-* No plans to support 1.8 Ruby branches
+* MRI 1.9.2 and 2.x, Rubinius and JRuby 1.9 modes not yet tested. No plans to support 1.8 Ruby modes.
 
 Mega API coverage is far from complete at this point (help appreciated!). Here's the run-down:
 
@@ -22,7 +20,9 @@ Supported API functions:
 * User/session management: Complete accounts
 * Login session challenge/response
 * Retrieve file and folder nodes
-* Request download URL (and download file contents)
+* Request download URL
+* Download files
+* Download file message authentication codes ({MAC}[http://en.wikipedia.org/wiki/Message_authentication_code])
 
 Currently unsupported API functions:
 * User/session management: Ephemeral accounts

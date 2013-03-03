@@ -75,15 +75,32 @@ module Megar::CryptoSupport
     # e.unpack('l>*')
   end
 
-  # Returns AES-128 decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
+  # Returns AES-128 CBC decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
   def aes_cbc_decrypt_a32(data, key)
     str_to_a32(aes_cbc_decrypt(a32_to_str(data), a32_to_str(key)))
   end
 
-  # Returns AES-128 decrypted given +key+ and +data+ (String)
+  # Returns AES-128 CBC decrypted given +key+ and +data+ (String)
   def aes_cbc_decrypt(data, key)
     aes = OpenSSL::Cipher::Cipher.new('AES-128-CBC')
     aes.decrypt
+    aes.padding = 0
+    aes.key = key
+    aes.iv = "\0" * 16
+    d = aes.update(data)
+    d = aes.final if d.empty?
+    d
+  end
+
+  # Returns AES-128 CBC decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
+  def aes_cbc_encrypt_a32(data, key, signed=true)
+    str_to_a32(aes_cbc_encrypt(a32_to_str(data), a32_to_str(key)),signed)
+  end
+
+  # Returns AES-128 CBC encrypted given +key+ and +data+ (String)
+  def aes_cbc_encrypt(data, key)
+    aes = OpenSSL::Cipher::Cipher.new('AES-128-CBC')
+    aes.encrypt
     aes.padding = 0
     aes.key = key
     aes.iv = "\0" * 16
@@ -96,10 +113,15 @@ module Megar::CryptoSupport
   #
   # Javascript reference implementation: function str_to_a32(b)
   #
-  def str_to_a32(b)
+  def str_to_a32(b,signed=true)
     a = Array.new((b.length+3) >> 2,0)
     b.length.times { |i| a[i>>2] |= (b.getbyte(i) << (24-(i & 3)*8)) }
-    a.pack('l>*').unpack('l>*') # hack to force to signed 32-bit ... I don't think we really need to do this, but it makes comparison with
+    if signed
+      # hack to force to signed 32-bit ... I don't think we really need to do this, but it makes comparison with
+      a.pack('l>*').unpack('l>*')
+    else
+      a
+    end
   end
 
   # Returns a packed string given an array +a+ of 32-bit signed integers
@@ -418,5 +440,26 @@ module Megar::CryptoSupport
     aes.iv = a32_to_str(iv)
     aes
   end
+
+  # Returns the +chunk+ mac (array of unsigned int)
+  #
+  def calculate_chunk_mac(chunk,decomposed_key,iv,signed=false)
+    chunk_mac = [iv[0], iv[1], iv[0], iv[1]]
+    (0..chunk.length-1).step(16).each do |i|
+      block = chunk[i,16]
+      if (m = block.length % 16) > 0
+        block << "\0" * m
+      end
+      block = str_to_a32(block,signed)
+      chunk_mac = [
+          chunk_mac[0] ^ block[0],
+          chunk_mac[1] ^ block[1],
+          chunk_mac[2] ^ block[2],
+          chunk_mac[3] ^ block[3]]
+      chunk_mac = aes_cbc_encrypt_a32(chunk_mac, decomposed_key, signed)
+    end
+    chunk_mac
+  end
+
 
 end
