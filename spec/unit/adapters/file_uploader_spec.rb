@@ -5,6 +5,8 @@ describe Megar::FileUploader do
   let(:instance) { model_class.new(attributes) }
   let(:attributes) { {} }
 
+  subject { instance }
+
   describe "#upload_key" do
     subject { instance.upload_key }
     it { should be_a(Array) }
@@ -38,9 +40,13 @@ describe Megar::FileUploader do
     context "when given a File" do
       let(:file_handle) { File.open(crypto_sample_file_path(file_name),'rb') }
       it { file_handle.should be_a(File) }
-      describe "#upload_size" do
-        subject { instance.upload_size }
-        it { should eql(file_expectation['size']) }
+      its(:upload_size) { should eql(file_expectation['size']) }
+      its(:name) { should eql(file_name) }
+
+      context "when override the filename" do
+        let(:new_name) { 'a new name.txt' }
+        let(:attributes) { { body: file_handle, name: new_name } }
+        its(:name) { should eql(new_name) }
       end
     end
 

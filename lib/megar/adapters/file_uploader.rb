@@ -12,11 +12,13 @@ class Megar::FileUploader
   attr_reader :folder
   attr_reader :session
   attr_reader :body
+  attr_writer :name
 
   def initialize(options={})
     @folder = options[:folder]
     @session = @folder && @folder.session
     self.body = options[:body]
+    self.name = options[:name]
   end
 
   def body=(value)
