@@ -493,7 +493,7 @@ module Megar::CryptoSupport
     aes
   end
 
-  # Returns AES CTR-mode encryption cipher given +key+ and +iv+ as array of int
+  # Returns AES CTR-mode encryption cipher given +key+ as array of int and +iv+ as binary string
   #
   def get_file_encrypter(key,iv)
     aes = OpenSSL::Cipher::Cipher.new('AES-128-CTR')
@@ -506,8 +506,8 @@ module Megar::CryptoSupport
 
   # Returns the +chunk+ mac (array of unsigned int)
   #
-  def calculate_chunk_mac(chunk,decomposed_key,iv,signed=false)
-    chunk_mac = [iv[0], iv[1], iv[0], iv[1]]
+  def calculate_chunk_mac(chunk,key,iv,signed=false)
+    chunk_mac = iv
     (0..chunk.length-1).step(16).each do |i|
       block = chunk[i,16]
       if (m = block.length % 16) > 0
@@ -515,14 +515,26 @@ module Megar::CryptoSupport
       end
       block = str_to_a32(block,signed)
       chunk_mac = [
-          chunk_mac[0] ^ block[0],
-          chunk_mac[1] ^ block[1],
-          chunk_mac[2] ^ block[2],
-          chunk_mac[3] ^ block[3]]
-      chunk_mac = aes_cbc_encrypt_a32(chunk_mac, decomposed_key, signed)
+        chunk_mac[0] ^ block[0],
+        chunk_mac[1] ^ block[1],
+        chunk_mac[2] ^ block[2],
+        chunk_mac[3] ^ block[3]
+      ]
+      chunk_mac = aes_cbc_encrypt_a32(chunk_mac, key, signed)
     end
     chunk_mac
   end
 
+  # Calculates the accummulated MAC given new +chunk+
+  def accumulate_mac(chunk,progressive_mac,key,iv,signed=true)
+    chunk_mac = calculate_chunk_mac(chunk,key,iv,signed)
+    combined_mac = [
+      progressive_mac[0] ^ chunk_mac[0],
+      progressive_mac[1] ^ chunk_mac[1],
+      progressive_mac[2] ^ chunk_mac[2],
+      progressive_mac[3] ^ chunk_mac[3]
+    ]
+    aes_cbc_encrypt_a32(combined_mac, key, signed)
+  end
 
 end

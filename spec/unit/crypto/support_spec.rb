@@ -528,14 +528,35 @@ describe Megar::CryptoSupport do
       {
         chunk_b64:      'Re_JkMdeElC-EdjpC0Aoxw9k6mymXoJq5Deqgx9a2Vpj8sX6l34B',
         decomposed_key: [1455434630,1271130048,979342435,1808341711],
-        iv:             [758940180,1555777008,0,0],
+        chunk_mac_iv:   [758940180,1555777008,758940180,1555777008],
         expected_mac:   [2029949810, 584234195, 3282227752, 2170965113]
       }
     ].each do |options|
       context "when chunk_b64 = #{options[:chunk_b64]}" do
         let(:chunk)          { harness.base64urldecode(options[:chunk_b64]) }
         let(:decomposed_key) { options[:decomposed_key] }
-        let(:iv)             { options[:iv] }
+        let(:iv)             { options[:chunk_mac_iv] }
+        it { should eql(options[:expected_mac]) }
+      end
+    end
+  end
+
+  describe "#accumulate_mac" do
+    subject { harness.accumulate_mac(chunk,progressive_mac,key,iv) }
+    [
+      {
+        chunk_b64:       'Re_JkMdeElC-EdjpC0Aoxw9k6mymXoJq5Deqgx9a2Vpj8sX6l34B',
+        key:             [1455434630, 1271130048, 979342435, 1808341711],
+        progressive_mac: [1649900877, 3786760977, 26559147, 602156686],
+        chunk_mac_iv:    [758940180, 1555777008, 758940180, 1555777008],
+        expected_mac:    [-259790568, 215606833, 1883564717, -1389129415]
+      }
+    ].each do |options|
+      context "when chunk_b64 = #{options[:chunk_b64]}" do
+        let(:chunk)           { harness.base64urldecode(options[:chunk_b64]) }
+        let(:key)             { options[:key] }
+        let(:progressive_mac) { options[:progressive_mac] }
+        let(:iv)              { options[:chunk_mac_iv] }
         it { should eql(options[:expected_mac]) }
       end
     end

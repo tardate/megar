@@ -177,8 +177,8 @@ class Megar::Session
 
   # Command: decrypt/decode the login +response_data+ received from Mega
   #
-  def handle_files_response(response_data)
-    reset_files!
+  def handle_files_response(response_data,reset=true)
+    reset_files! if reset
     response_data['f'].each do |f|
       item_attributes = {id: f['h'], payload: f.dup, type: f['t'] }
       case f['t']

@@ -21,20 +21,6 @@ describe Megar::FileDownloader do
 
   end
 
-  describe "#calculate_chunk_mac (protected)" do
-    subject { instance.send(:calculate_chunk_mac,'chunk') }
-    before do
-      instance.stub(:decomposed_key).and_return('decomposed_key')
-      instance.stub(:iv).and_return('iv')
-    end
-    it "should delegate the correct call to session" do
-      session = mock()
-      session.should_receive(:calculate_chunk_mac).with('chunk','decomposed_key','iv',true)
-      instance.stub(:session).and_return(session)
-      subject
-    end
-  end
-
   crypto_expectations['sample_files'].keys.each do |sample_file_name|
     context "with an active session testing download of #{sample_file_name}" do
 
@@ -56,52 +42,52 @@ describe Megar::FileDownloader do
         instance.stub(:stream).and_return(crypto_sample_encrypted_file_stream(file_name))
       end
 
-      # describe "#download_url_response" do
-      #   let(:expected) { file_expectation['file_download_url_response'] }
-      #   subject { instance.download_url_response }
-      #   it { should eql(expected) }
-      # end
+      describe "#download_url_response" do
+        let(:expected) { file_expectation['file_download_url_response'] }
+        subject { instance.download_url_response }
+        it { should eql(expected) }
+      end
 
-      # describe "#download_url" do
-      #   let(:expected) { /mega\.co\.nz\/dl/ }
-      #   subject { instance.download_url }
-      #   it { should match(expected) }
-      # end
+      describe "#download_url" do
+        let(:expected) { /mega\.co\.nz\/dl/ }
+        subject { instance.download_url }
+        it { should match(expected) }
+      end
 
-      # describe "#download_size" do
-      #   let(:expected) { file_expectation['size'] }
-      #   subject { instance.download_size }
-      #   it { should eql(expected) }
-      # end
+      describe "#download_size" do
+        let(:expected) { file_expectation['size'] }
+        subject { instance.download_size }
+        it { should eql(expected) }
+      end
 
-      # describe "#download_attributes" do
-      #   let(:expected) { { 'n' => file_name } }
-      #   subject { instance.download_attributes }
-      #   it { should eql(expected) }
-      # end
+      describe "#download_attributes" do
+        let(:expected) { { 'n' => file_name } }
+        subject { instance.download_attributes }
+        it { should eql(expected) }
+      end
 
-      # describe "#iv" do
-      #   let(:expected) { file_expectation['iv'] }
-      #   subject { instance.iv }
-      #   it { should eql(expected) }
-      # end
+      describe "#iv" do
+        let(:expected) { file_expectation['iv'] }
+        subject { instance.iv }
+        it { should eql(expected) }
+      end
 
-      # describe "#mac" do
-      #   let(:expected) { file_expectation['mac'] }
-      #   subject { instance.mac }
-      #   it { should eql(expected) }
-      # end
+      describe "#mac" do
+        let(:expected) { file_expectation['mac'] }
+        subject { instance.mac }
+        it { should eql(expected) }
+      end
 
-      # describe "#initial_counter_value" do
-      #   let(:expected) { file_expectation['initial_counter_value'] }
-      #   subject { instance.initial_counter_value }
-      #   it { should eql(expected) }
-      # end
+      describe "#initial_counter_value" do
+        let(:expected) { file_expectation['initial_counter_value'] }
+        subject { instance.initial_counter_value }
+        it { should eql(expected) }
+      end
 
-      # describe "#raw_content" do
-      #   subject { Digest::SHA1.hexdigest(instance.raw_content) }
-      #   it { should eql(sample_encrypted_content_digest) }
-      # end
+      describe "#raw_content" do
+        subject { Digest::SHA1.hexdigest(instance.raw_content) }
+        it { should eql(sample_encrypted_content_digest) }
+      end
 
       describe "#content" do
         subject { Digest::SHA1.hexdigest(instance.content) }

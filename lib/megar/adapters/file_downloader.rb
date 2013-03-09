@@ -37,7 +37,7 @@ class Megar::FileDownloader
       chunk = stream.readpartial(chunk_size)
       decoded_chunk = decryptor.update(chunk)
       decoded_content << decoded_chunk
-      calculated_mac = accumulate_mac(calculated_mac,decoded_chunk)
+      calculated_mac = accumulate_mac(decoded_chunk,calculated_mac,decomposed_key,chunk_mac_iv)
     end
 
     raise Megar::MacVerificationError.new unless ([calculated_mac[0] ^ calculated_mac[1], calculated_mac[2] ^ calculated_mac[3]] == mac)
@@ -71,6 +71,10 @@ class Megar::FileDownloader
   # Returns the initialisation vector
   def iv
     @iv ||= key[4,2] + [0, 0]
+  end
+
+  def chunk_mac_iv
+    [iv[0], iv[1], iv[0], iv[1]]
   end
 
   # Returns the expected MAC for the file
@@ -107,23 +111,6 @@ class Megar::FileDownloader
   # Returns true if live session/file properly set
   def live_session?
     !!(session && file)
-  end
-
-  def accumulate_mac(progressive_mac,chunk)
-    use_signed_math = true
-    chunk_mac = calculate_chunk_mac(chunk,use_signed_math)
-    combined_mac = [
-      progressive_mac[0] ^ chunk_mac[0],
-      progressive_mac[1] ^ chunk_mac[1],
-      progressive_mac[2] ^ chunk_mac[2],
-      progressive_mac[3] ^ chunk_mac[3]
-    ]
-    session.aes_cbc_encrypt_a32(combined_mac, decomposed_key, use_signed_math)
-  end
-
-  # Returns the calculated mac for +chunk+
-  def calculate_chunk_mac(chunk,signed=true)
-    session.calculate_chunk_mac(chunk,decomposed_key,iv,signed)
   end
 
 end
