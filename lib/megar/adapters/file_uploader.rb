@@ -71,6 +71,11 @@ class Megar::FileUploader
     meta_mac = [calculated_mac[0] ^ calculated_mac[1], calculated_mac[2] ^ calculated_mac[3]]
 
     upload_attributes_response = send_file_upload_attributes(meta_mac,completion_file_handle)
+    if upload_attributes_response.is_a?(Hash) && upload_attributes_response['f']
+      session.handle_files_response(upload_attributes_response,false)
+    else
+      raise Megar::FileUploadError.new
+    end
   end
 
   # upload chunk

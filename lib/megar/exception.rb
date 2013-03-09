@@ -9,7 +9,11 @@ module Megar
   # Raised when MAC fails verification test
   class MacVerificationError < Error; end
 
+  # Raised when unsupported file type passed to create/update a file
   class UnsupportedFileHandleTypeError < Error; end
+
+  # Raised on non-API related file upload errors
+  class FileUploadError < Error; end
 
   class MegaRequestError < Error
 

@@ -126,6 +126,29 @@ class Megar::Session
     })
   end
 
+  # Command: decrypt/decode the login +response_data+ received from Mega
+  #
+  def handle_files_response(response_data,reset=true)
+    reset_files! if reset
+    response_data['f'].each do |f|
+      item_attributes = {id: f['h'], payload: f.dup, type: f['t'] }
+      case f['t']
+      when 0 # File
+        item_attributes[:key] = k = decrypt_file_key(f)
+        item_attributes[:decomposed_key] = key = decompose_file_key(k)
+        item_attributes[:attributes] = decrypt_file_attributes(f['a'],key)
+        files.add(item_attributes)
+      when 1 # Folder
+        item_attributes[:key] = k = decrypt_file_key(f)
+        item_attributes[:attributes] = decrypt_file_attributes(f['a'],k)
+        folders.add(item_attributes)
+      when 2,3,4 # Root, Inbox, Trash Bin
+        folders.add(item_attributes)
+      end
+    end
+    true
+  end
+
   protected
 
   # Command: enforces guard condition requiring authenticated connection to proceed
@@ -173,29 +196,6 @@ class Megar::Session
   def get_files_response
     ensure_connected!
     api_request({'a' => 'f', 'c' => 1})
-  end
-
-  # Command: decrypt/decode the login +response_data+ received from Mega
-  #
-  def handle_files_response(response_data,reset=true)
-    reset_files! if reset
-    response_data['f'].each do |f|
-      item_attributes = {id: f['h'], payload: f.dup, type: f['t'] }
-      case f['t']
-      when 0 # File
-        item_attributes[:key] = k = decrypt_file_key(f)
-        item_attributes[:decomposed_key] = key = decompose_file_key(k)
-        item_attributes[:attributes] = decrypt_file_attributes(f['a'],key)
-        files.add(item_attributes)
-      when 1 # Folder
-        item_attributes[:key] = k = decrypt_file_key(f)
-        item_attributes[:attributes] = decrypt_file_attributes(f['a'],k)
-        folders.add(item_attributes)
-      when 2,3,4 # Root, Inbox, Trash Bin
-        folders.add(item_attributes)
-      end
-    end
-    true
   end
 
 end

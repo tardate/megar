@@ -2,27 +2,18 @@ require 'spec_helper'
 
 describe "Megar Exceptions" do
 
-  describe "Megar::Error" do
-    let(:exception_class) { Megar::Error }
-    subject { raise exception_class.new("test") }
-    it "should raise correctly" do
-      expect { subject }.to raise_error(exception_class)
-    end
-  end
-
-  describe "Megar::CryptoSupportRequirementsError" do
-    let(:exception_class) { Megar::CryptoSupportRequirementsError }
-    subject { raise exception_class.new("test") }
-    it "should raise correctly" do
-      expect { subject }.to raise_error(exception_class)
-    end
-  end
-
-  describe "Megar::MacVerificationError" do
-    let(:exception_class) { Megar::MacVerificationError }
-    subject { raise exception_class.new("test") }
-    it "should raise correctly" do
-      expect { subject }.to raise_error(exception_class)
+  [
+    Megar::Error,
+    Megar::CryptoSupportRequirementsError,
+    Megar::MacVerificationError,
+    Megar::UnsupportedFileHandleTypeError,
+    Megar::FileUploadError
+  ].each do |exception_class|
+    describe exception_class do
+      subject { raise exception_class.new("test") }
+      it "should raise correctly" do
+        expect { subject }.to raise_error(exception_class)
+      end
     end
   end
 

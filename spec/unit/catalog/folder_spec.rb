@@ -44,6 +44,16 @@ describe Megar::Folder do
         its(:id) { should eql('dir3') }
         its(:parent_folder) { should eql(folder) }
       end
+      describe "#create" do
+        let(:attributes) { { name: 'a name', body: 'file_handle'} }
+        subject { folder.create(attributes) }
+        it "should create a valid uploader and post!" do
+          uploader = mock()
+          uploader.should_receive(:post!)
+          Megar::FileUploader.should_receive(:new).with(attributes.merge(folder: folder)).and_return(uploader)
+          subject
+        end
+      end
     end
 
     context "when child folders not present" do

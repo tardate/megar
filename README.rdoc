@@ -221,6 +221,13 @@ If you want to change the name of the file as stored in Mega, you can also provi
 
   session.files.create( name: 'with a new name.png', body: file_handle )
 
+Once a file has been uploaded successfully, it will also be available in the local files catalog:
+
+  session.files.create( body: file_handle, name: 'new_file.png' )
+  => true
+  session.files.find_by_name('new_file.png')
+  => returns new file catalog entry
+
 
 === CLI: How to use the command-line client
 
