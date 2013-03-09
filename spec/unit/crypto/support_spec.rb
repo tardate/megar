@@ -18,6 +18,7 @@ describe Megar::CryptoSupport do
     subject { harness.str_to_a32(string) }
     # expectation generation in Javascript:
     #   str_to_a32(base64urldecode('zL-S9BspoEopTUm3z3O8CA'))
+    #   str_to_a32(base64urldecode('YmxlLi4AAAAAAAAAAAAAAA'))
     [
       { given: "\xCC\xBF\x92\xF4\e)\xA0J)MI\xB7\xCFs\xBC\b", expect: [-859860236,455712842,692930999,-814498808] },
       { given: 'a', expect: [1627389952] },
@@ -25,6 +26,15 @@ describe Megar::CryptoSupport do
     ].each do |test_case|
       context "given #{test_case[:given]}" do
         let(:string) { test_case[:given] }
+        it { should eql(test_case[:expect]) }
+      end
+    end
+    [
+      { given: 'zL-S9BspoEopTUm3z3O8CA', expect: [-859860236,455712842,692930999,-814498808] },
+      { given: 'YmxlLi4AAAAAAAAAAAAAAA', expect: [1651270958, 771751936, 0, 0] }
+    ].each do |test_case|
+      context "given #{test_case[:given]}" do
+        let(:string) { harness.base64urldecode(test_case[:given]) }
         it { should eql(test_case[:expect]) }
       end
     end
@@ -530,6 +540,11 @@ describe Megar::CryptoSupport do
         decomposed_key: [1455434630,1271130048,979342435,1808341711],
         chunk_mac_iv:   [758940180,1555777008,758940180,1555777008],
         expected_mac:   [2029949810, 584234195, 3282227752, 2170965113]
+      },{
+        chunk_b64:      'SnVzdCBhYm91dCB0aGUgc2ltcGxlc3QgZmlsZSBwb3NzaWJsZS4uSnVzdCBhYm91dCB0aGUgc2ltcGxlc3QgZmlsZSBwb3NzaWJsZS4uSnVzdCBhYm91dCB0aGUgc2ltcGxlc3QgZmlsZSBwb3NzaWJsZS4u',
+        decomposed_key: [2016295139, 2872496308, 1974113602, 40814121],
+        chunk_mac_iv:   [3326582948, 288270468, 3326582948, 288270468],
+        expected_mac:   [4085249905, 2687924527, 2252792538, 707619224]
       }
     ].each do |options|
       context "when chunk_b64 = #{options[:chunk_b64]}" do

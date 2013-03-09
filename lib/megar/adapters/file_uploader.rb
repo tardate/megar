@@ -4,6 +4,9 @@ require 'pathname'
 
 # Encapsulates a file upload task. This is intended as a one-shot helper.
 #
+# NB: there seems to be an issue if you try to upload
+# multiple files of exactly the same size in the same session.
+#
 # Javascript reference implementation: function initupload3()
 #
 class Megar::FileUploader

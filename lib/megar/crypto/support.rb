@@ -510,8 +510,8 @@ module Megar::CryptoSupport
     chunk_mac = iv
     (0..chunk.length-1).step(16).each do |i|
       block = chunk[i,16]
-      if (m = block.length % 16) > 0
-        block << "\0" * m
+      if (mod = block.length % 16) > 0
+        block << "\x0" * (16 - mod)
       end
       block = str_to_a32(block,signed)
       chunk_mac = [
