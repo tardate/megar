@@ -2,8 +2,17 @@
 
 Megar ("megaargh!" in pirate-speak) is a Ruby wrapper and command-line (CLI) client for the {Mega API}[https://mega.co.nz/#developers].
 
-So far this is "experimental". Megar has coverage of the basic file/folder operations: connect, get file/folder listings and details, and
-download files. There's more in the API that would be worth supporting .. a job for tomorrow!
+Megar has coverage of the basic file/folder operations: connect, get file/folder listings and details,
+upload and download files. Read on - the following sections provide cookbook examples for using Megar within Ruby
+and from the command-line.
+
+Your help is greatly appreciated on two fronts:
+* Use: It needs hammering to make sure we don't have the edge-case crypto bugs.
+* Code: there's more interesting stuff in the API it would be nice to support. And a lot it would be nice to refactor (the priority so far has been to make it work correctly and testably, not fast or elegantly). Tuck in!
+
+IMPORTANT: note the OpenSSL 1.0.1+ requirement. It is quite likely that if you've never thought much about your OpenSSL installation
+in the past that it will need updating. Don't worry, Megar will complain to you if this is the case. There are some notes down below
+on how to update OpenSSL.
 
 
 == Requirements and Known Limitations
@@ -357,6 +366,8 @@ Sweet.
 * {Mega API is documentation}[https://mega.co.nz/#developers]
 * {Using the Mega API, with Python examples}[http://julien-marchand.fr/blog/using-mega-api-with-python-examples/]
 * {SpiderOak's Analysis and Recommendations for the Crypto in Kim Dotcom's Mega}[https://spideroak.com/blog/20130123130638-spideroaks-analysis-and-recommendations-for-the-crypto-in-kim-dotcoms-mega-part-one]
+* {mega.py - a Python library for Mega}[https://github.com/richardasaurus/mega.py]
+* {My blog post about Megar}[http://tardate.blogspot.sg/2013/03/rolling-mega-api-with-ruby.html]
 
 
 == Contributing
