@@ -75,14 +75,7 @@ module Megar::Crypto::Support
 
   # Returns AES-128 encrypted given +key+ and +data+ (arrays of 32-bit signed integers)
   def aes_encrypt_a32(data, key)
-    aes = OpenSSL::Cipher::Cipher.new('AES-128-ECB')
-    aes.encrypt
-    aes.padding = 0
-    aes.key = key.pack('l>*')
-    aes.update(data.pack('l>*')).unpack('l>*')
-    # e = aes.update(data.pack('l>*')).unpack('l>*')
-    # e << aes.final
-    # e.unpack('l>*')
+    Megar::Crypto::Aes.new.encrypt(data, key)
   end
 
   # Returns AES-128 CBC decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
@@ -92,14 +85,7 @@ module Megar::Crypto::Support
 
   # Returns AES-128 CBC decrypted given +key+ and +data+ (String)
   def aes_cbc_decrypt(data, key)
-    aes = OpenSSL::Cipher::Cipher.new('AES-128-CBC')
-    aes.decrypt
-    aes.padding = 0
-    aes.key = key
-    aes.iv = "\0" * 16
-    d = aes.update(data)
-    d = aes.final if d.empty?
-    d
+    Megar::Crypto::Aes.new.decrypt(data, key)
   end
 
   # Returns AES-128 CBC decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
@@ -109,14 +95,7 @@ module Megar::Crypto::Support
 
   # Returns AES-128 CBC encrypted given +key+ and +data+ (String)
   def aes_cbc_encrypt(data, key)
-    aes = OpenSSL::Cipher::Cipher.new('AES-128-CBC')
-    aes.encrypt
-    aes.padding = 0
-    aes.key = key
-    aes.iv = "\0" * 16
-    d = aes.update(data)
-    d = aes.final if d.empty?
-    d
+    Megar::Crypto::Aes.new.encrypt(data, key)
   end
 
   # Returns an array of 32-bit signed integers representing the string +b+
@@ -278,10 +257,8 @@ module Megar::Crypto::Support
     4.times do
       len = ((privk[0].ord * 256 + privk[1].ord + 7) / 8) + 2
       privk_part = privk[0,len]
-      # puts "\nprivk_part #{base64urlencode(privk_part)}"
       privk_part_a32 = mpi_to_a32(privk_part)
       decomposed_key << privk_part_a32
-      # puts "decomp: len:#{len} privk_part_a32:#{privk_part_a32.length} first:#{privk_part_a32.first} last:#{privk_part_a32.last}"
       privk.slice!(0,len)
     end
     decomposed_key
@@ -303,8 +280,6 @@ module Megar::Crypto::Support
     4.times do |i|
       len = ((privk[0].ord * 256 + privk[1].ord + 7) / 8) + 2
       privk_part = privk[0,len]
-      # puts "\nl: ", len
-      # puts "decrypted rsa part hex: \n", privk_part.unpack('H*').first
       decomposed_key << privk_part[2,privk_part.length].unpack('H*').first.to_i(16)
       privk.slice!(0,len)
     end
