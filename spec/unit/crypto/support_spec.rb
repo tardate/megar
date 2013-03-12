@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 class CryptoSupportTestHarness
-  include Megar::CryptoSupport
+  include Megar::Crypto::Support
 end
 
-describe Megar::CryptoSupport do
+describe Megar::Crypto::Support do
   let(:harness) { CryptoSupportTestHarness.new }
 
   describe "#crypto_requirements_met?" do

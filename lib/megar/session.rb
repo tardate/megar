@@ -1,6 +1,6 @@
 class Megar::Session
 
-  include Megar::CryptoSupport
+  include Megar::Crypto::Support
   include Megar::Connection
 
   attr_accessor :options

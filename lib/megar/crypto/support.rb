@@ -9,7 +9,7 @@ require 'base64'
 #
 # Javascript reference implementations quoted here are taken from the Mega javascript source.
 #
-module Megar::CryptoSupport
+module Megar::Crypto::Support
 
   # Verifies that the required crypto support is available from ruby/openssl
   def crypto_requirements_met?

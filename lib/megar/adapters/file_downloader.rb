@@ -5,7 +5,7 @@ require 'open-uri'
 # Javascript reference implementation: function startdownload2(res,ctx)
 #
 class Megar::FileDownloader
-  include Megar::CryptoSupport
+  include Megar::Crypto::Support
 
   attr_reader :session
   attr_reader :file

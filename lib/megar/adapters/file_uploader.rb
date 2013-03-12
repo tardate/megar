@@ -10,7 +10,7 @@ require 'pathname'
 # Javascript reference implementation: function initupload3()
 #
 class Megar::FileUploader
-  include Megar::CryptoSupport
+  include Megar::Crypto::Support
 
   attr_reader :folder
   attr_reader :session
