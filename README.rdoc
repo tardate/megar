@@ -10,14 +10,15 @@ Your help is greatly appreciated on two fronts:
 * Use: It needs hammering to make sure we don't have the edge-case crypto bugs.
 * Code: there's more interesting stuff in the API it would be nice to support. And a lot it would be nice to refactor (the priority so far has been to make it work correctly and testably, not fast or elegantly). Tuck in!
 
-NOTE: megar no longer requires OpenSSL 1.0.1+. It is quite happy with any version that implements AES-128-CBC (commonly OpenSSL 0.9.8 or greater).
+NOTE: megar no longer requires OpenSSL 1.0.1+. It is quite happy with any version that implements AES-128-CBC
+(commonly OpenSSL 0.9.8 or greater, which you most likely already have installed).
 
 
 == Requirements and Known Limitations
 
 Consider this totally alpha at this point, especially since the Mega API has yet to be formally and fully documented.
 
-* Currently tested with MRI 1.9.3
+* Currently tested with MRI 1.9.3 with OpenSSL 0.9.8+
 * MRI 1.9.2 and 2.x, Rubinius and JRuby 1.9 modes not yet tested. No plans to support 1.8 Ruby modes.
 
 Mega API coverage is far from complete at this point (help appreciated!). Here's the run-down:
@@ -324,7 +325,7 @@ The tests will still run as intended with the snapshot of crypto details stored 
 
 === Checking my OpenSSL installation
 
-Check the openssl version installed:
+Megar will fail with a warning if suitable OpenSSL support is not available. To manually check the OpenSSL version installed:
 
   $ irb -r openssl
   1.9.3p327 :001 > OpenSSL::VERSION
@@ -364,6 +365,7 @@ Sweet.
 * {SpiderOak's Analysis and Recommendations for the Crypto in Kim Dotcom's Mega}[https://spideroak.com/blog/20130123130638-spideroaks-analysis-and-recommendations-for-the-crypto-in-kim-dotcoms-mega-part-one]
 * {mega.py - a Python library for Mega}[https://github.com/richardasaurus/mega.py]
 * {My blog post about Megar}[http://tardate.blogspot.sg/2013/03/rolling-mega-api-with-ruby.html]
+* {rmega - another Ruby implementation}[https://github.com/daniele-m/rmega] - it seems rmega came to life on a similar timeline to megar. Some different implementation decisions have been made under the covers, so I don't think we'll see these projects merge anytime soon. But that means you have more choice;-) My thanks to the rmega folks for inspiring the switch in megar from OpenSSL 1.0.1+ AES CTR implementation to a native version that works with OpenSSL 0.9.8.
 
 
 == Contributing
