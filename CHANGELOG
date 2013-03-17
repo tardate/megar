@@ -1,3 +1,8 @@
+0.0.4 reduce OpenSSL requirements               17-Mar-2013
+===========================================================
+* switch to a native AES CTR implementation so there are no
+  longer any special OpenSSL requirements
+
 0.0.3 put and get ready                          9-Mar-2013
 ===========================================================
 * basic file upload support added
