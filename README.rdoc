@@ -358,6 +358,26 @@ See the {rvm openssl}[https://rvm.io//packages/openssl/] page for details..
 Sweet.
 
 
+=== What do I do if I get an SSL certificate verification error?
+
+Megar uses SSL to connect to mega.co.nz, and it possible you may see an SSL error like the
+following when you try to use it:
+
+    SSL_connect returned=1 errno=0 state=SSLv3 read server certificate B: certificate verify failed
+
+There are lots of discussion and workarounds for this problem (
+{google it!}[https://www.google.com.sg/search?q=ruby+SSL_connect+certificate+verify+failed]
+) but fundamentally it is telling you that the CA certificates available to your Ruby installation
+are out of date. How you fix it depends on the operating system.
+
+Here's an example of updating the CA certs for CentOS that fixes this problem for megar:
+
+    $ ls /etc/pki/tls/certs
+    $ sudo cp /etc/pki/tls/certs/ca-bundle.crt /etc/pki/tls/certs/ca-bundle.crt.backup
+    $ sudo curl http://curl.haxx.se/ca/cacert.pem -o /etc/pki/tls/certs/ca-bundle.crt
+    $ sudo cp /etc/pki/tls/certs/ca-bundle.crt $rvm_path/usr/ssl/cert.pem # required location for rvm ruby
+
+
 == References
 
 * {Mega API is documentation}[https://mega.co.nz/#developers]
