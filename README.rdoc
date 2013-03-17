@@ -10,9 +10,7 @@ Your help is greatly appreciated on two fronts:
 * Use: It needs hammering to make sure we don't have the edge-case crypto bugs.
 * Code: there's more interesting stuff in the API it would be nice to support. And a lot it would be nice to refactor (the priority so far has been to make it work correctly and testably, not fast or elegantly). Tuck in!
 
-IMPORTANT: note the OpenSSL 1.0.1+ requirement. It is quite likely that if you've never thought much about your OpenSSL installation
-in the past that it will need updating. Don't worry, Megar will complain to you if this is the case. There are some notes down below
-on how to update OpenSSL.
+NOTE: megar no longer requires OpenSSL 1.0.1+. It is quite happy with any version that implements AES-128-CBC (commonly OpenSSL 0.9.8 or greater).
 
 
 == Requirements and Known Limitations
@@ -20,7 +18,6 @@ on how to update OpenSSL.
 Consider this totally alpha at this point, especially since the Mega API has yet to be formally and fully documented.
 
 * Currently tested with MRI 1.9.3
-* Requires OpenSSL 1.0.1+ (and properly linked with ruby)
 * MRI 1.9.2 and 2.x, Rubinius and JRuby 1.9 modes not yet tested. No plans to support 1.8 Ruby modes.
 
 Mega API coverage is far from complete at this point (help appreciated!). Here's the run-down:
@@ -325,12 +322,9 @@ commit and distribute credentials. Change the password on the account first.
 The tests will still run as intended with the snapshot of crypto details stored in the expectations file.
 
 
-=== Getting my OpenSSL installation up to snuff (MacOSX)
+=== Checking my OpenSSL installation
 
-These notes are specific to MacOSX. Mileage on other operating systems may vary, but this should give you
-a guide:
-
-Check the openssl version installed
+Check the openssl version installed:
 
   $ irb -r openssl
   1.9.3p327 :001 > OpenSSL::VERSION
@@ -338,16 +332,18 @@ Check the openssl version installed
   1.9.3p327 :002 > OpenSSL::OPENSSL_VERSION
    => "OpenSSL 0.9.8r 8 Feb 2011"
 
-OK, that's too old. The OS-installed version is probably not going to change any time soon, and we don't
-want to replace it (too many unintended consequences) but we need a later version to use with ruby.
+OK, that's fine. Note that earlier versions of megar required 1.0.1+ but that is no longer the case.
 
-You can install form source, use brew or macports, or use rvm.
+If you do need or want to install or update OpenSSL, you can install from source or rvm.
+On MacOSX, it is probably not a good idea to upgrade the OS-installed version (too many unintended consequences),
+but you can also use brew or macports to install a version in parallel.
+
 
 ==== Installing OpenSSL Using RVM:
 
 See the {rvm openssl}[https://rvm.io//packages/openssl/] page for details..
 
-  $  rvm pkg install openssl
+  $ rvm pkg install openssl
   Fetching openssl-1.0.1c.tar.gz to ...
 
   $ rvm reinstall 1.9.3 --with-openssl-dir=$rvm_path/usr

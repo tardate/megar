@@ -31,7 +31,7 @@ class Megar::FileDownloader
     decoded_content = ''
     calculated_mac = [0, 0, 0, 0]
 
-    decryptor = get_file_decrypter(decomposed_key,iv)
+    decryptor = get_file_cipher(decomposed_key,iv)
 
     get_chunks(download_size).each do |chunk_start, chunk_size|
       chunk = stream.readpartial(chunk_size)

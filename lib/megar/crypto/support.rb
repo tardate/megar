@@ -13,7 +13,7 @@ module Megar::Crypto::Support
 
   # Verifies that the required crypto support is available from ruby/openssl
   def crypto_requirements_met?
-    OpenSSL::Cipher.ciphers.include?("AES-128-CTR")
+    OpenSSL::Cipher.ciphers.include?("AES-128-CBC")
   end
 
   # Returns encrypted key given an array +a+ of 32-bit integers
@@ -455,26 +455,10 @@ module Megar::Crypto::Support
     chunks
   end
 
-  # Returns AES CTR-mode decryption cipher given +key+ and +iv+ as array of int
+  # Returns AES CTR-mode decryption cipher given +key+ and +iv+ as array of 32-bit integer
   #
-  def get_file_decrypter(key,iv)
-    aes = OpenSSL::Cipher::Cipher.new('AES-128-CTR')
-    aes.decrypt
-    aes.padding = 0
-    aes.key = a32_to_str(key)
-    aes.iv = a32_to_str(iv)
-    aes
-  end
-
-  # Returns AES CTR-mode encryption cipher given +key+ as array of int and +iv+ as binary string
-  #
-  def get_file_encrypter(key,iv)
-    aes = OpenSSL::Cipher::Cipher.new('AES-128-CTR')
-    aes.encrypt
-    aes.padding = 0
-    aes.key = a32_to_str(key)
-    aes.iv = iv
-    aes
+  def get_file_cipher(key,iv)
+    Megar::Crypto::AesCtr.new(key: key, iv: iv)
   end
 
   # Returns the +chunk+ mac (array of unsigned int)

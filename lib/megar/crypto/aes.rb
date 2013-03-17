@@ -1,13 +1,20 @@
+# A convenience wrapper for AES CBC implementation provided by OpenSSL
 class Megar::Crypto::Aes
 
   attr_accessor :key
+  attr_accessor :iv
 
   def initialize(options={})
     self.key = options[:key]
+    self.iv = options[:iv]
   end
 
   def key=(value)
     @key = value.is_a?(Array) ? value.pack(packing) : value
+  end
+
+  def iv=(value)
+    @iv = value || "\x0" * 16
   end
 
   def packing
@@ -20,10 +27,6 @@ class Megar::Crypto::Aes
 
   def cipher
     @cipher ||= OpenSSL::Cipher::Cipher.new(mode)
-  end
-
-  def iv
-    "\x0" * 16
   end
 
   def encrypt(data)

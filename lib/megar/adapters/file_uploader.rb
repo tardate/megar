@@ -62,7 +62,7 @@ class Megar::FileUploader
     calculated_mac = [0, 0, 0, 0]
     completion_file_handle = ''
 
-    encryptor = get_file_encrypter(upload_key,iv_str)
+    encryptor = get_file_cipher(upload_key,iv)
 
     get_chunks(upload_size).each do |chunk_start, chunk_size|
       chunk = stream.readpartial(chunk_size)
@@ -121,11 +121,8 @@ class Megar::FileUploader
   end
 
   def iv
-    ((upload_key[4]<<32)+upload_key[5])<<64
-  end
-
-  def iv_str
-    hexstr_to_bstr( iv.to_s(16) )
+    # ((upload_key[4]<<32)+upload_key[5])<<64
+    [upload_key[4], upload_key[5], 0, 0]
   end
 
   # Returns and caches a file upload response
