@@ -51,14 +51,11 @@ module Megar::Connection
     params['sid'] = sid if sid
     json_data = [data].to_json
 
-    response_data = get_api_response(params,json_data).first
-
-    raise Megar::MegaRequestError.new(response_data) if response_data.is_a?(Fixnum)
-
-    response_data
+    response_body = get_api_response(params,json_data)
+    parse_json_response(response_body)
   end
 
-  # Command: low-level method to actually perform the API request and return the JSON response.
+  # Command: low-level method to actually perform the API request and return the response body.
   # Given +params+ Hash of query string parameters, and +data+ JSON data structure.
   # Note: there is no handling of network errors or timeouts - any exceptions will bubble up.
   def get_api_response(params,data)
@@ -66,10 +63,24 @@ module Megar::Connection
     http.use_ssl = (api_uri.scheme == 'https')
     uri_path = api_uri.path.empty? ? '/' : api_uri.path
     uri_path << hash_to_query_string(params)
-    response = http.post(uri_path,data)
-    JSON.parse(response.body)
+    http.post(uri_path,data).body
   end
   protected :get_api_response
+
+  # Returns the first response as JSON from response +body+, raising Mega error if present.
+  # Note: expects and currently only handles a single response in the data
+  def parse_json_response(body)
+    begin
+      response_data = JSON.parse(body)
+      response_data = response_data.first if response_data.is_a?(Array)
+    rescue => e
+      raise Megar::MegaRequestError.new(body.to_i) if body =~ /^[-\d]+$/
+      raise Megar::BadApiResponseError.new(e)
+    end
+    raise Megar::MegaRequestError.new(response_data) if response_data.is_a?(Fixnum)
+    response_data
+  end
+  protected :parse_json_response
 
   # Returns Hash +h+ as an encoded query string '?a=b&c=d...'
   def hash_to_query_string(h)

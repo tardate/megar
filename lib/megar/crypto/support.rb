@@ -106,7 +106,6 @@ module Megar::Crypto::Support
     a = Array.new((b.length+3) >> 2,0)
     b.length.times { |i| a[i>>2] |= (b.getbyte(i) << (24-(i & 3)*8)) }
     if signed
-      # hack to force to signed 32-bit ... I don't think we really need to do this, but it makes comparison with
       a.pack('l>*').unpack('l>*')
     else
       a
@@ -131,7 +130,7 @@ module Megar::Crypto::Support
     s32 = str_to_a32(s)
     h32 = [0,0,0,0]
     s32.length.times {|i| h32[i&3] ^= s32[i] }
-    16384.times {|i| h32 = aes_encrypt_a32(h32, aeskey) }
+    0x4000.times {|i| h32 = aes_encrypt_a32(h32, aeskey) }
     a32_to_base64([h32[0],h32[2]])
   end
 

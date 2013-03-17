@@ -36,11 +36,40 @@ describe Megar::Connection do
   describe "#api_request" do
     let(:data) { {} }
     subject { harness.api_request(data) }
-    context "when error response" do
-      let(:response_data) { JSON.parse("[-15,-15,-15]") }
-      it "should raise associated error" do
-        harness.stub(:get_api_response).and_return(response_data)
-        expect { subject }.to raise_error(Megar::MegaRequestError)
+
+    {
+      as_json: "[-15,-15,-15]",
+      as_error_code: "-15"
+    }.each do |test_name,given_response|
+      context "when mega error response (#{given_response})" do
+        it "should raise associated error" do
+          harness.stub(:get_api_response).and_return(given_response)
+          expect { subject }.to raise_error(Megar::MegaRequestError)
+        end
+      end
+    end
+
+    {
+      as_broken_json: "[{,{},{}]"
+    }.each do |test_name,given_response|
+      context "when invalid JSON response (#{given_response})" do
+        it "should raise associated error" do
+          harness.stub(:get_api_response).and_return(given_response)
+          expect { subject }.to raise_error(Megar::BadApiResponseError)
+        end
+      end
+    end
+
+    {
+      as_json: { given: '[{"a":1},{"b":2}]', expect: {'a' => 1} },
+      as_unarray: { given: '{"a":1}', expect: {'a' => 1} }
+    }.each do |test_name,expectations|
+      context "when valid response (#{expectations[:given]})" do
+        before { harness.stub(:get_api_response).and_return(expectations[:given]) }
+        it "should not raise error" do
+          expect { subject }.to_not raise_error
+        end
+        it { should eql(expectations[:expect]) }
       end
     end
 

@@ -7,7 +7,8 @@ describe "Megar Exceptions" do
     Megar::CryptoSupportRequirementsError,
     Megar::MacVerificationError,
     Megar::UnsupportedFileHandleTypeError,
-    Megar::FileUploadError
+    Megar::FileUploadError,
+    Megar::BadApiResponseError
   ].each do |exception_class|
     describe exception_class do
       subject { raise exception_class.new("test") }

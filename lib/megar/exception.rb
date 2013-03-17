@@ -15,6 +15,9 @@ module Megar
   # Raised on non-API related file upload errors
   class FileUploadError < Error; end
 
+  # Raised on non-mega API related request errors
+  class BadApiResponseError < Error; end
+
   class MegaRequestError < Error
 
     # Initialise with +error_code+ returned from Mega
