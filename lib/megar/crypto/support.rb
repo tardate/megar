@@ -72,10 +72,14 @@ module Megar::Crypto::Support
     a32_to_str(decrypt_base64_to_a32(data, key))
   end
 
+  # Returns AES-128 CBC encrypted given +key+ and +data+ (String)
+  def aes_cbc_encrypt(data, key)
+    Megar::Crypto::Aes.new(key: key).encrypt(data)
+  end
 
   # Returns AES-128 encrypted given +key+ and +data+ (arrays of 32-bit signed integers)
   def aes_encrypt_a32(data, key)
-    Megar::Crypto::Aes.new.encrypt(data, key)
+    Megar::Crypto::Aes.new(key: key).encrypt(data)
   end
 
   # Returns AES-128 CBC decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
@@ -85,17 +89,12 @@ module Megar::Crypto::Support
 
   # Returns AES-128 CBC decrypted given +key+ and +data+ (String)
   def aes_cbc_decrypt(data, key)
-    Megar::Crypto::Aes.new.decrypt(data, key)
+    Megar::Crypto::Aes.new(key: key).decrypt(data)
   end
 
   # Returns AES-128 CBC decrypted given +key+ and +data+ (arrays of 32-bit signed integers)
   def aes_cbc_encrypt_a32(data, key, signed=true)
     str_to_a32(aes_cbc_encrypt(a32_to_str(data), a32_to_str(key)),signed)
-  end
-
-  # Returns AES-128 CBC encrypted given +key+ and +data+ (String)
-  def aes_cbc_encrypt(data, key)
-    Megar::Crypto::Aes.new.encrypt(data, key)
   end
 
   # Returns an array of 32-bit signed integers representing the string +b+

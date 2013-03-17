@@ -1,5 +1,15 @@
 class Megar::Crypto::Aes
 
+  attr_accessor :key
+
+  def initialize(options={})
+    self.key = options[:key]
+  end
+
+  def key=(value)
+    @key = value.is_a?(Array) ? value.pack(packing) : value
+  end
+
   def packing
     'l>*'
   end
@@ -16,40 +26,32 @@ class Megar::Crypto::Aes
     "\x0" * 16
   end
 
-  def encrypt(data, key)
-    k = key.is_a?(Array)  ? key.pack(packing)  : key
-    d = data.is_a?(Array) ? data.pack(packing) : data
+  def encrypt(data)
+    a32_mode = data.is_a?(Array)
+    d = a32_mode ? data.pack(packing) : data
 
     cipher.reset
     cipher.encrypt
     cipher.padding = 0
     cipher.iv = iv
-    cipher.key = k
+    cipher.key = key
     result = cipher.update d
 
-    if data.is_a? Array
-      result.unpack packing
-    else
-      result
-    end
+    a32_mode ? result.unpack(packing) : result
   end
 
-  def decrypt(data, key)
-    k = key.is_a?(Array)  ? key.pack(packing)  : key
-    d = data.is_a?(Array) ? data.pack(packing) : data
+  def decrypt(data)
+    a32_mode = data.is_a?(Array)
+    d = a32_mode ? data.pack(packing) : data
 
     cipher.reset
     cipher.decrypt
     cipher.padding = 0
     cipher.iv = iv
-    cipher.key = k
+    cipher.key = key
     result = cipher.update d
 
-    if data.is_a? Array
-      result.unpack packing
-    else
-      result
-    end
+    a32_mode ? result.unpack(packing) : result
   end
 
 end
